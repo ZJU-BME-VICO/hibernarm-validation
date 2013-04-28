@@ -1,2 +1,2 @@
-ADR
+Archetype Driven Repository
 ===
