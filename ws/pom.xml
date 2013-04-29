@@ -10,14 +10,11 @@
 	<packaging>war</packaging>
 	<name>Simple CXF Java-first SOAP project using Spring configuration</name>
 	<description>Simple CXF Java-first SOAP project using Spring configuration</description>
-
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0</version>
 				<configuration>
 					<path>/</path>
 					<port>8099</port>
@@ -26,7 +23,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>

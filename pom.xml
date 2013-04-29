@@ -9,6 +9,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.7.4</cxf.version>
+		<openEHR.version>1.0.3-SNAPSHOT</openEHR.version>
+		<hibernarm.version>1.0.3-SNAPSHOT</hibernarm.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -35,7 +37,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -61,8 +62,8 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<modules>
 		<module>ws</module>
+		<module>aql2sql</module>
 	</modules>
 </project>
