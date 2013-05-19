@@ -3,13 +3,10 @@ package adr.ws;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -20,7 +17,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.transform.Transformers;
+import org.openehr.am.parser.ContentObject;
+import org.openehr.am.parser.DADLParser;
+import org.openehr.am.parser.ParseException;
+import org.openehr.build.RMObjectBuildingException;
 import org.openehr.rm.binding.DADLBinding;
+import org.openehr.rm.binding.DADLBindingException;
+import org.openehr.rm.composition.content.entry.Observation;
 
 @WebService(endpointInterface = "adr.ws.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
@@ -51,16 +54,17 @@ public class AQLExecuteImpl implements AQLExecute {
 	@Override
 	@WebMethod
 	@WebResult
-	public
-	Boolean reconfigure() {
+	public Boolean reconfigure() {
 		try {
 			for (String key : arms.keySet()) {
-				InputStream is = new ByteArrayInputStream(arms.get(key).getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(arms.get(key)
+						.getBytes("UTF-8"));
 				cfg.addInputStream(is);
 			}
 
 			for (String key : archetypes.keySet()) {
-				InputStream is = new ByteArrayInputStream(archetypes.get(key).getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(archetypes.get(key)
+						.getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
 		} catch (Exception e) {
@@ -69,7 +73,7 @@ public class AQLExecuteImpl implements AQLExecute {
 
 		sessionFactory.close();
 		sessionFactory = cfg.buildSessionFactory();
-		
+
 		return true;
 	}
 
@@ -92,7 +96,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public List<String> select(@WebParam String aql,
-			@WebParam String archetypeId, @WebParam List<String> parameters) {
+			@WebParam String archetypeId, @WebParam List<String> parameters)
+			throws Exception {
 
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
@@ -103,23 +108,14 @@ public class AQLExecuteImpl implements AQLExecute {
 				.setResultTransformer(
 						Transformers.aliasToArchetype(archetypeId)).listAQL();
 
-		DADLBinding binding = new DADLBinding();
-		for (Object obj : results) {
-			StringBuilder sb = new StringBuilder();
-			try {
-				for (String str : binding.toDADL(obj)) {
-					sb.append(str);
-					sb.append("\n");
-				}
-			} catch (Exception e) {
-				continue;
-			}
-			dadlResults.add(sb.toString());
-		}
-
 		s.flush();
 		txn.commit();
 		s.close();
+
+		DADLBinding binding = new DADLBinding();
+		for (Object obj : results) {
+			dadlResults.add(binding.toDADLString(obj));
+		}
 
 		return dadlResults;
 
@@ -128,10 +124,32 @@ public class AQLExecuteImpl implements AQLExecute {
 	@Override
 	@WebMethod
 	@WebResult
-	public List<String> insert(@WebParam String aql,
-			@WebParam List<String> parameters) {
-		// TODO Auto-generated method stub
-		return null;
+	public void insert(@WebParam List<String> dadls)
+			throws UnsupportedEncodingException, ParseException,
+			DADLBindingException, RMObjectBuildingException {
+
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
+
+		List<Object> objects = new ArrayList<Object>();
+
+		for (String dadl : dadls) {
+			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
+			DADLParser parser = new DADLParser(is);
+			ContentObject contentObj = parser.parse();
+			DADLBinding binding = new DADLBinding();
+			Observation bp = (Observation) binding.bind(contentObj);
+			objects.add(bp);
+		}
+
+		for (Object object : objects) {
+			s.save(object);
+		}
+
+		s.flush();
+		txn.commit();
+		s.close();
+
 	}
 
 }

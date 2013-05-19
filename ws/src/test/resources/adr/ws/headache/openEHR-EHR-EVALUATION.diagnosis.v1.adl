@@ -1,0 +1,150 @@
+archetype (adl_version=1.4)
+	openEHR-EHR-EVALUATION.diagnosis.v1
+
+concept
+	[at0000]	-- Diagnosis
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			copyright = <"">
+		>
+	>
+	lifecycle_state = <"0">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"5644C316164C807E109BAB5EBA679218">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Diagnosis
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- 计算机诊断结论1
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- 计算机诊断结论2
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- 医生诊断头痛1
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {	-- 医生诊断头痛2
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- 医生诊断头痛3
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- 医生诊断头痛4
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {	-- 参考用药1
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {	-- 参考用药2
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- 参考用药3
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {	-- 参考用药4
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- 报告
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Diagnosis">
+					description = <"unknown">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"计算机诊断结论1">
+					description = <"*">
+				>
+				["at0004"] = <
+					text = <"计算机诊断结论2">
+					description = <"*">
+				>
+				["at0005"] = <
+					text = <"医生诊断头痛1">
+					description = <"*">
+				>
+				["at0006"] = <
+					text = <"医生诊断头痛2">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"医生诊断头痛3">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"医生诊断头痛4">
+					description = <"*">
+				>
+				["at0009"] = <
+					text = <"参考用药1">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"参考用药2">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"参考用药3">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"参考用药4">
+					description = <"*">
+				>
+				["at0013"] = <
+					text = <"报告">
+					description = <"*">
+				>
+			>
+		>
+	>

@@ -1,0 +1,155 @@
+archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.living_habits.v1
+
+concept
+	[at0000]	-- Living habits
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			copyright = <"">
+		>
+	>
+	lifecycle_state = <"0">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"D24EEDA148EC72A3E19F8111066E7497">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Living habits
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- 是否吸烟
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- 是否喝酒
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- 是否喝咖啡
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {	-- 是否喝茶
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- 是否与月经相关
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {	-- 喝咖啡是否诱发
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0011] occurrences matches {0..1} matches {	-- 活动后是否缓解
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {	-- 洗澡后是否缓解
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Living habits">
+					description = <"unknown">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"是否吸烟">
+					description = <"*">
+				>
+				["at0006"] = <
+					text = <"是否喝酒">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"是否喝咖啡">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"是否喝茶">
+					description = <"*">
+				>
+				["at0009"] = <
+					text = <"是否与月经相关">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"喝咖啡是否诱发">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"活动后是否缓解">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"洗澡后是否缓解">
+					description = <"*">
+				>
+			>
+		>
+	>
