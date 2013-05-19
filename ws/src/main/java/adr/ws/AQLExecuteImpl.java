@@ -12,6 +12,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -96,22 +97,26 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public List<String> select(@WebParam String aql,
-			@WebParam String archetypeId, @WebParam List<String> parameters)
-			throws Exception {
+			@WebParam String archetypeId,
+			@WebParam Map<String, Object> parameters) throws Exception {
 
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
 
-		List<String> dadlResults = new ArrayList<String>();
-		List results = s
-				.createAQLQuery(aql)
-				.setResultTransformer(
-						Transformers.aliasToArchetype(archetypeId)).listAQL();
+		Query q = s.createAQLQuery(aql);
+		if (parameters != null) {
+			for (String paraName : parameters.keySet()) {
+				q.setParameter(paraName, parameters.get(paraName));
+			}
+		}
+		List results = q.setResultTransformer(
+				Transformers.aliasToArchetype(archetypeId)).listAQL();
 
 		s.flush();
 		txn.commit();
 		s.close();
 
+		List<String> dadlResults = new ArrayList<String>();
 		DADLBinding binding = new DADLBinding();
 		for (Object obj : results) {
 			dadlResults.add(binding.toDADLString(obj));
@@ -149,6 +154,31 @@ public class AQLExecuteImpl implements AQLExecute {
 		s.flush();
 		txn.commit();
 		s.close();
+
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public int delete(@WebParam String aql,
+			@WebParam Map<String, Object> parameters) {
+
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
+
+		Query q = s.createAQLQuery(aql);
+		if (parameters != null) {
+			for (String paraName : parameters.keySet()) {
+				q.setParameter(paraName, parameters.get(paraName));
+			}
+		}
+		int ret = q.executeUpdateAQL();
+
+		s.flush();
+		txn.commit();
+		s.close();
+		
+		return ret;
 
 	}
 

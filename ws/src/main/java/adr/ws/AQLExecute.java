@@ -2,6 +2,7 @@ package adr.ws;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -44,14 +45,15 @@ public interface AQLExecute {
 	/**
 	 * @param aql
 	 * @param archetypeId
-	 * @param parameters
+	 * @param listParameterName
+	 * @param listParameterValue
 	 * @return
 	 * @throws Exception
 	 */
 	@WebMethod
 	@WebResult
 	List<String> select(@WebParam String aql, @WebParam String archetypeId,
-			@WebParam List<String> parameters) throws Exception;
+			@WebParam Map<String, Object> parameters) throws Exception;
 
 	/**
 	 * @param aql
@@ -67,5 +69,12 @@ public interface AQLExecute {
 	void insert(@WebParam List<String> dadls)
 			throws UnsupportedEncodingException, ParseException,
 			DADLBindingException, RMObjectBuildingException;
+
+	/**
+	 * @param aql
+	 */
+	@WebMethod
+	@WebResult
+	int delete(@WebParam String aql, @WebParam Map<String, Object> parameters);
 
 }

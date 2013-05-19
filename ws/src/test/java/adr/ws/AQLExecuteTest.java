@@ -22,12 +22,6 @@ import org.openehr.rm.support.identification.HierObjectID;
 
 public class AQLExecuteTest extends AQLExecuteTestBase {
 
-	protected String[] getDadlFiles() {
-		return new String[] {
-				"adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
-				"adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
-	}
-
 	@Test
 	public void testReconfigure() throws IOException {
 		AQLExecute aqlImpl = new AQLExecuteImpl();
@@ -126,6 +120,24 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		responses = aqlImpl.select(query, archetypeId, null);
 		assertEquals(responses.size(), count + 2);
+	}
+
+	@Test
+	public void testDelete() throws Exception {
+		testReconfigure();
+
+		AQLExecute aqlImpl = new AQLExecuteImpl();
+		String queryDelete = "delete from openEHR-EHR-OBSERVATION.blood_pressure.v1";
+		aqlImpl.delete(queryDelete, null);
+
+		String query = "select "
+				+ "o#/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as /data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude, "
+				+ "o#/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude as /data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude "
+				+ "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
+		String archetypeId = "openEHR-EHR-OBSERVATION.blood_pressure.v1";
+
+		List<String> responses = aqlImpl.select(query, archetypeId, null);
+		assertEquals(responses.size(), 0);
 	}
 
 }
