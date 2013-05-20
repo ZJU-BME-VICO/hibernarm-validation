@@ -72,9 +72,20 @@ public interface AQLExecute {
 
 	/**
 	 * @param aql
+	 * @param parameters
+	 * @return
 	 */
 	@WebMethod
 	@WebResult
 	int delete(@WebParam String aql, @WebParam Map<String, Object> parameters);
+
+	/**
+	 * @param aql
+	 * @param parameters
+	 * @return
+	 */
+	@WebMethod
+	@WebResult
+	int update(@WebParam String aql, @WebParam Map<String, Object> parameters);
 
 }

@@ -24,7 +24,6 @@ import org.openehr.am.parser.ParseException;
 import org.openehr.build.RMObjectBuildingException;
 import org.openehr.rm.binding.DADLBinding;
 import org.openehr.rm.binding.DADLBindingException;
-import org.openehr.rm.composition.content.entry.Observation;
 
 @WebService(endpointInterface = "adr.ws.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
@@ -104,11 +103,7 @@ public class AQLExecuteImpl implements AQLExecute {
 		Transaction txn = s.beginTransaction();
 
 		Query q = s.createAQLQuery(aql);
-		if (parameters != null) {
-			for (String paraName : parameters.keySet()) {
-				q.setParameter(paraName, parameters.get(paraName));
-			}
-		}
+		passParameters(q, parameters);
 		List results = q.setResultTransformer(
 				Transformers.aliasToArchetype(archetypeId)).listAQL();
 
@@ -133,9 +128,6 @@ public class AQLExecuteImpl implements AQLExecute {
 			throws UnsupportedEncodingException, ParseException,
 			DADLBindingException, RMObjectBuildingException {
 
-		Session s = sessionFactory.openSession();
-		Transaction txn = s.beginTransaction();
-
 		List<Object> objects = new ArrayList<Object>();
 
 		for (String dadl : dadls) {
@@ -143,9 +135,12 @@ public class AQLExecuteImpl implements AQLExecute {
 			DADLParser parser = new DADLParser(is);
 			ContentObject contentObj = parser.parse();
 			DADLBinding binding = new DADLBinding();
-			Observation bp = (Observation) binding.bind(contentObj);
+			Object bp = binding.bind(contentObj);
 			objects.add(bp);
 		}
+
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
 
 		for (Object object : objects) {
 			s.save(object);
@@ -163,22 +158,43 @@ public class AQLExecuteImpl implements AQLExecute {
 	public int delete(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) {
 
+		return executeUpdate(aql, parameters);
+
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public int update(@WebParam String aql,
+			@WebParam Map<String, Object> parameters) {
+
+		return executeUpdate(aql, parameters);
+	}
+
+	protected int executeUpdate(String aql, Map<String, Object> parameters) {
+
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
 
 		Query q = s.createAQLQuery(aql);
-		if (parameters != null) {
-			for (String paraName : parameters.keySet()) {
-				q.setParameter(paraName, parameters.get(paraName));
-			}
-		}
+		passParameters(q, parameters);
 		int ret = q.executeUpdateAQL();
 
 		s.flush();
 		txn.commit();
 		s.close();
-		
+
 		return ret;
+
+	}
+
+	protected void passParameters(Query q, Map<String, Object> parameters) {
+
+		if (parameters != null) {
+			for (String paraName : parameters.keySet()) {
+				q.setParameter(paraName, parameters.get(paraName));
+			}
+		}
 
 	}
 
