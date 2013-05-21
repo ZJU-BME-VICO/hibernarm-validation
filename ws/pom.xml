@@ -17,7 +17,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<url>http://localhost:9090/manager/text</url>
+					<url>http://192.168.1.61:9090/manager/text</url>
 					<path>/adr</path>
 					<charset>${project.build.sourceEncoding}</charset>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
