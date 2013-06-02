@@ -56,7 +56,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	}
 	
 	protected void cleanTestBaseData() {
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 
 		for (String str : archetypes.keySet()) {
 			String aql = String.format("delete from %s as o", str);
@@ -65,7 +65,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	}
 
 	public void testReconfigure() throws IOException {
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		
 		for (String str : archetypes.keySet()) {
 			aqlImpl.registerArchetype(str, archetypes.get(str));
@@ -86,7 +86,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		
 		createTestBaseData();
 		
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -261,7 +261,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			dadls.add(binding.toDADLString(bp));
 		}
 
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		aqlImpl.insert(dadls);
 
 		String query = "select "
@@ -276,7 +276,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	public void testDelete() throws Exception {
 		testReconfigure();
 
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		String queryDelete = "delete from openEHR-EHR-OBSERVATION.blood_pressure.v1";
 		aqlImpl.delete(queryDelete, null);
 
@@ -296,7 +296,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		
 		createTestBaseData();
 
-		AQLExecute aqlImpl = new AQLExecuteImpl();
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 		
 		{

@@ -96,6 +96,16 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public List<String> select(@WebParam String aql,
+			@WebParam String archetypeId) throws Exception {
+
+		return select(aql, archetypeId, null);
+
+	}
+
+//	@Override
+//	@WebMethod
+	@WebResult
+	public List<String> select(@WebParam String aql,
 			@WebParam String archetypeId,
 			@WebParam Map<String, Object> parameters) throws Exception {
 
@@ -155,6 +165,15 @@ public class AQLExecuteImpl implements AQLExecute {
 	@Override
 	@WebMethod
 	@WebResult
+	public int delete(@WebParam String aql) {
+
+		return delete(aql, null);
+
+	}
+
+//	@Override
+//	@WebMethod
+	@WebResult
 	public int delete(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) {
 
@@ -164,6 +183,14 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	@Override
 	@WebMethod
+	@WebResult
+	public int update(@WebParam String aql) {
+
+		return update(aql, null);
+	}
+
+//	@Override
+//	@WebMethod
 	@WebResult
 	public int update(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) {

@@ -45,15 +45,25 @@ public interface AQLExecute {
 	/**
 	 * @param aql
 	 * @param archetypeId
-	 * @param listParameterName
-	 * @param listParameterValue
 	 * @return
 	 * @throws Exception
 	 */
 	@WebMethod
 	@WebResult
-	List<String> select(@WebParam String aql, @WebParam String archetypeId,
-			@WebParam Map<String, Object> parameters) throws Exception;
+	List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception;
+
+	/**
+	 * @param aql
+	 * @param archetypeId
+	 * @param listParameterName
+	 * @param listParameterValue
+	 * @return
+	 * @throws Exception
+	 */
+//	@WebMethod
+//	@WebResult
+//	List<String> select(@WebParam String aql, @WebParam String archetypeId,
+//			@WebParam Map<String, Object> parameters) throws Exception;
 
 	/**
 	 * @param aql
@@ -72,20 +82,36 @@ public interface AQLExecute {
 
 	/**
 	 * @param aql
-	 * @param parameters
 	 * @return
 	 */
 	@WebMethod
 	@WebResult
-	int delete(@WebParam String aql, @WebParam Map<String, Object> parameters);
+	int delete(@WebParam String aql);
+	
+	/**
+	 * @param aql
+	 * @param parameters
+	 * @return
+	 */
+//	@WebMethod
+//	@WebResult
+//	int delete(@WebParam String aql, @WebParam Map<String, Object> parameters);
+
+	/**
+	 * @param aql
+	 * @return
+	 */
+	@WebMethod
+	@WebResult
+	int update(@WebParam String aql);
 
 	/**
 	 * @param aql
 	 * @param parameters
 	 * @return
 	 */
-	@WebMethod
-	@WebResult
-	int update(@WebParam String aql, @WebParam Map<String, Object> parameters);
+//	@WebMethod
+//	@WebResult
+//	int update(@WebParam String aql, @WebParam Map<String, Object> parameters);
 
 }
