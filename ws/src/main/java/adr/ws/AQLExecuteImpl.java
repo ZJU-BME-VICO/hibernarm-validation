@@ -57,14 +57,18 @@ public class AQLExecuteImpl implements AQLExecute {
 	public Boolean reconfigure() {
 		try {
 			for (String key : arms.keySet()) {
+//				InputStream is = new ByteArrayInputStream(arms.get(key)
+//						.getBytes("UTF-8"));
 				InputStream is = new ByteArrayInputStream(arms.get(key)
-						.getBytes("UTF-8"));
+						.getBytes());
 				cfg.addInputStream(is);
 			}
 
 			for (String key : archetypes.keySet()) {
+//				InputStream is = new ByteArrayInputStream(archetypes.get(key)
+//						.getBytes("UTF-8"));
 				InputStream is = new ByteArrayInputStream(archetypes.get(key)
-						.getBytes("UTF-8"));
+						.getBytes());
 				cfg.addArchetype(is);
 			}
 		} catch (Exception e) {
@@ -141,7 +145,8 @@ public class AQLExecuteImpl implements AQLExecute {
 		List<Object> objects = new ArrayList<Object>();
 
 		for (String dadl : dadls) {
-			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
+//			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
+			InputStream is = new ByteArrayInputStream(dadl.getBytes());
 			DADLParser parser = new DADLParser(is);
 			ContentObject contentObj = parser.parse();
 			DADLBinding binding = new DADLBinding();
