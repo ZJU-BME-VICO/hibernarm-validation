@@ -2,6 +2,8 @@ package adr.ws;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -247,10 +249,8 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		List<String> dadls = new ArrayList<String>();
 		for (String dadl : getDadlFiles()) {
-			InputStream is = Thread
-					.currentThread()
-					.getContextClassLoader()
-					.getResourceAsStream(dadl);
+			File file = new File(dadl);
+			InputStream is = new FileInputStream(file);
 			DADLParser parser = new DADLParser(is);
 			ContentObject contentObj = parser.parse();
 			DADLBinding binding = new DADLBinding();

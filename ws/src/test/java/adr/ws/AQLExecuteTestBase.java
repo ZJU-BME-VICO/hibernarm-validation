@@ -1,6 +1,9 @@
 package adr.ws;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,47 +32,47 @@ public class AQLExecuteTestBase {
 	public AQLExecuteTestBase() throws IOException {
 		archetypes.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-				readLines("adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-				readLines("adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
 
 		archetypes.put("openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("adr/ws/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
 		arms.put(
 				"openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("adr/ws/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("adr/ws/openEHR-EHR-COMPOSITION.visit.v3.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.adl"));
 		arms.put("openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("adr/ws/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.adl.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.adl.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.adl.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.adl.v1.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.cdr.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.cdr.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.cdr.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.gds.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.gds.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.gds.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.gds.v1.arm.xml"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.mmse.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.mmse.v1.adl"));
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.mmse.v1",
-				readLines("adr/ws/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm.xml"));		
+				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm.xml"));		
 	}
 
 	protected String[] getDadlFiles() {
 		return new String[] {
-				"adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
-				"adr/ws/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
+				"../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
+				"../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
 	}
 
 	protected Map<HashMap<String, Object>, String> getArchetypeValues() {
@@ -128,8 +131,9 @@ public class AQLExecuteTestBase {
 
 	protected static String readLines(String name) throws IOException {
 		StringBuilder result = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				Thread.currentThread().getContextClassLoader().getResourceAsStream(name)));
+		File file = new File(name);
+		InputStream is = new FileInputStream(file);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
 		String line = reader.readLine();
 		while (line != null) {
