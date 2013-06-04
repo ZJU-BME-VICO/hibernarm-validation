@@ -49,7 +49,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					GenerationStrategy.MAXIMUM_EMPTY);
 			if (result instanceof Locatable) {
 				Locatable loc = (Locatable) result;
-				ReflectHelper.setArchetypeValue(archetype, loc, values);
+				ReflectHelper.setArchetypeValue(loc, values);
 				dadls.add(binding.toDADLString(loc));
 			}
 		}
