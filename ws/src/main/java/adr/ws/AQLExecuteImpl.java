@@ -35,13 +35,6 @@ public class AQLExecuteImpl implements AQLExecute {
 	private static Map<String, String> arms;
 
 	public AQLExecuteImpl() {
-		if (cfg == null) {
-			cfg = new Configuration();
-			cfg.configure();
-
-			sessionFactory = cfg.buildSessionFactory();
-		}
-
 		if (archetypes == null) {
 			archetypes = new HashMap<String, String>();
 		}
@@ -49,12 +42,21 @@ public class AQLExecuteImpl implements AQLExecute {
 		if (arms == null) {
 			arms = new HashMap<String, String>();
 		}
+		
+		reconfigure();
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public Boolean reconfigure() {
+		if (sessionFactory != null) {
+			sessionFactory.close();
+		}
+
+		cfg = new Configuration();
+		cfg.configure();
+		
 		try {
 			for (String key : arms.keySet()) {
 //				InputStream is = new ByteArrayInputStream(arms.get(key)
@@ -74,8 +76,7 @@ public class AQLExecuteImpl implements AQLExecute {
 		} catch (Exception e) {
 			return false;
 		}
-
-		sessionFactory.close();
+			
 		sessionFactory = cfg.buildSessionFactory();
 
 		return true;
