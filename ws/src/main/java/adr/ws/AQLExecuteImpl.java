@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -26,9 +24,6 @@ import org.openehr.am.parser.ParseException;
 import org.openehr.build.RMObjectBuildingException;
 import org.openehr.rm.binding.DADLBinding;
 import org.openehr.rm.binding.DADLBindingException;
-import org.openehr.rm.common.archetyped.Locatable;
-import org.openehr.rm.composition.content.entry.Observation;
-import org.openehr.rm.support.identification.HierObjectID;
 
 @WebService(endpointInterface = "adr.ws.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
@@ -156,15 +151,6 @@ public class AQLExecuteImpl implements AQLExecute {
 			ContentObject contentObj = parser.parse();
 			DADLBinding binding = new DADLBinding();
 			Object bp = binding.bind(contentObj);
-			
-			// Check uid
-			Locatable loc = (Locatable) bp;
-			if (loc.getUid() == null) {
-				UUID uuid = UUID.randomUUID();
-				HierObjectID uid = new HierObjectID(uuid.toString());
-				loc.setUid(uid);
-			}
-			
 			objects.add(bp);
 		}
 
