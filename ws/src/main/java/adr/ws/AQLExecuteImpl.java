@@ -119,8 +119,10 @@ public class AQLExecuteImpl implements AQLExecute {
 
 		Query q = s.createAQLQuery(aql);
 		passParameters(q, parameters);
-		List results = q.setResultTransformer(
-				Transformers.aliasToArchetype(archetypeId)).listAQL();
+		if (!archetypeId.isEmpty()) {
+			q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
+		}
+		List results = q.listAQL();
 
 		s.flush();
 		txn.commit();
