@@ -32,47 +32,47 @@ public class AQLExecuteTestBase {
 	public AQLExecuteTestBase() throws IOException {
 		archetypes.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
 
 		archetypes.put("openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
 		arms.put(
 				"openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.adl"));
 		arms.put("openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.adl.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.adl.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.adl.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.cdr.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.cdr.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.gds.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.gds.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.arm.xml"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.gds.v1.arm.xml"));
 
 		archetypes.put("openEHR-EHR-OBSERVATION.mmse.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.adl"));
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.adl"));
 		arms.put("openEHR-EHR-OBSERVATION.mmse.v1",
-				readLines("../../../../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm.xml"));		
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm.xml"));		
 	}
 
 	protected String[] getDadlFiles() {
 		return new String[] {
-				"../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
-				"../../../../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
+				"../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
+				"../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
 	}
 
 	protected Map<HashMap<String, Object>, String> getArchetypeValues() {
