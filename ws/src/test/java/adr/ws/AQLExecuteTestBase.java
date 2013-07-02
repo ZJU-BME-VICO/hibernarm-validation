@@ -173,7 +173,7 @@ public class AQLExecuteTestBase {
 					.put("/data[at0001]/events[at0002]/data[at0003]/items[at0004]/items[at0007]/value/magnitude",
 							3);
 			other_cognitions_scale_exams1
-					.put("/data[at0001]/events[at0002]/data[at0003]/items[at0004]/items[at0008]/value/magnitude",
+					.put("/data[at0001]/events[at0002]/data[at0003]/items[at0004]/items[at0096]/value/magnitude",
 							6);
 			results.put(other_cognitions_scale_exams1,
 					"openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1");

@@ -384,6 +384,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		reconfigure();
 
 		cleanTestBaseData();
+		createTestBaseData();
 
 		List<String> dadls = new ArrayList<String>();
 		for (String dadl : getDadlFiles()) {
