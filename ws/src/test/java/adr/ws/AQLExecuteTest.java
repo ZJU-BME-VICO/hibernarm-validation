@@ -583,6 +583,86 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 	}
 
+//	@Test
+//	public void testSelectColumn() throws Exception {
+//		reconfigure();
+//
+//		cleanTestBaseData();
+//		createTestBaseData();
+//
+//		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+//
+//		{
+//			String query = "select "
+//					+ "o#/uid/value, "
+//					+ "o#/details[at0001]/items[at0003]/value/value, "
+//					+ "o#/details[at0001]/items[at0004]/value/value, "
+//					+ "o#/details[at0001]/items[at0009]/value/value "
+//					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+//					+ "order by o#/uid/value asc";
+//			List results = aqlImpl.select(query, null, null);
+//
+//			assertEquals(results.size(), 3);
+//			Object[] loc1 = (Object[]) results.get(0);
+//			assertEquals(loc1[0], "patient1");
+//			assertEquals(loc1[1], "M");
+//			assertEquals(loc1[2], "1984-08-11T19:20:30+08:00");
+//			assertEquals(loc1[3], "zhangsan");
+//			Object[] loc2 = (Object[]) results.get(1);
+//			assertEquals(loc2[0], "patient2");
+//			assertEquals(loc2[1], "F");
+//			assertEquals(loc2[2], "1986-08-11T19:20:30+08:00");
+//			assertEquals(loc2[3], "lisi");
+//			Object[] loc3 = (Object[]) results.get(2);
+//			assertEquals(loc3[0], "patient3");
+//			assertEquals(loc3[1], "O");
+//			assertEquals(loc3[2], "1988-08-11T19:20:30+08:00");
+//			assertEquals(loc3[3], "wangwu");
+//		}
+//
+//		{
+//			String query = "select "
+//					+ "o#/uid/value, "
+//					+ "o#/details[at0001]/items[at0003]/value/value, "
+//					+ "o#/details[at0001]/items[at0004]/value/value, "
+//					+ "o#/details[at0001]/items[at0009]/value/value "
+//					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+//					+ "where o#/details[at0001]/items[at0009]/value/value = :name";
+//			Map<String, Object> parameters = new HashMap<String, Object>();
+//			parameters.put("name", "lisi");
+//			List results = aqlImpl.select(query, null, parameters);
+//
+//			assertEquals(results.size(), 1);
+//			Object[] loc2 = (Object[]) results.get(0);
+//			assertEquals(loc2[0], "patient2");
+//			assertEquals(loc2[1], "F");
+//			assertEquals(loc2[2], "1986-08-11T19:20:30+08:00");
+//			assertEquals(loc2[3], "lisi");
+//		}
+//
+//		{
+//			String query = "select "
+//					+ "o#/uid/value, "
+//					+ "o#/details[at0001]/items[at0003]/value/value, "
+//					+ "o#/details[at0001]/items[at0004]/value/value, "
+//					+ "o#/details[at0001]/items[at0009]/value/value "
+//					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+//					+ "where o#/uid/value = :name";
+//			Map<String, Object> parameters = new HashMap<String, Object>();
+//			parameters.put("name", "patient1");
+//			List results = aqlImpl.select(query, null, parameters);
+//
+//			assertEquals(results.size(), 1);
+//			Object[] loc1 = (Object[]) results.get(0);
+//			assertEquals(loc1[0], "patient1");
+//			assertEquals(loc1[1], "M");
+//			assertEquals(loc1[2], "1984-08-11T19:20:30+08:00");
+//			assertEquals(loc1[3], "zhangsan");
+//		}
+//
+//		cleanTestBaseData();
+//	}
+
 	@Test
 	public void testSelectParameterized() throws Exception {
 		reconfigure();
