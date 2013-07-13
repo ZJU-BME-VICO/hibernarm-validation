@@ -265,6 +265,42 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	}
 
 	@Test
+	public void testFromJoin() throws Exception {
+		reconfigure();
+
+		cleanTestBaseData();
+		createTestBaseData();
+
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+		DADLBinding binding = new DADLBinding();
+
+		{
+			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v ";
+			List<String> results = aqlImpl.select(query, null);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 3);
+			assertEquals(visits.size(), 3);
+		}
+
+		cleanTestBaseData();
+	}
+
+	@Test
 	public void testFromParameterized() throws Exception {
 		reconfigure();
 
@@ -662,6 +698,43 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 //
 //		cleanTestBaseData();
 //	}
+
+	@Test
+	public void testSelectJoin() throws Exception {
+		reconfigure();
+
+		cleanTestBaseData();
+		createTestBaseData();
+
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+		DADLBinding binding = new DADLBinding();
+
+		{
+			String query = "select p, v "
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v ";
+			List<String> results = aqlImpl.select(query, null);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 3);
+			assertEquals(visits.size(), 3);
+		}
+
+		cleanTestBaseData();
+	}
 
 	@Test
 	public void testSelectParameterized() throws Exception {

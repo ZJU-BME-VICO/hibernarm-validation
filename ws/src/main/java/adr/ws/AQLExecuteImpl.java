@@ -3,6 +3,7 @@ package adr.ws;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,8 +131,22 @@ public class AQLExecuteImpl implements AQLExecute {
 
 		List<String> dadlResults = new ArrayList<String>();
 		DADLBinding binding = new DADLBinding();
-		for (Object obj : results) {
-			dadlResults.add(binding.toDADLString(obj));
+		for (Object arr : results) {
+			if (arr.getClass().isArray()) {
+				for (int i = 0; i < Array.getLength(arr); i++)
+				{
+					String str = binding.toDADLString(Array.get(arr, i));
+					if (!dadlResults.contains(str)) {
+						dadlResults.add(str);						
+					}				
+				}			
+			}
+			else {	
+				String str = binding.toDADLString(arr);
+				if (!dadlResults.contains(str)) {
+					dadlResults.add(str);						
+				}				
+			}
 		}
 
 		return dadlResults;
