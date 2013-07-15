@@ -25,6 +25,7 @@ import org.openehr.am.parser.ParseException;
 import org.openehr.build.RMObjectBuildingException;
 import org.openehr.rm.binding.DADLBinding;
 import org.openehr.rm.binding.DADLBindingException;
+import org.openehr.rm.common.archetyped.Locatable;
 
 @WebService(endpointInterface = "adr.ws.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
@@ -118,39 +119,49 @@ public class AQLExecuteImpl implements AQLExecute {
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
 
-		Query q = s.createAQLQuery(aql);
+		Query q = s.createQuery(aql);
 		passParameters(q, parameters);
 		if (archetypeId != null && !archetypeId.isEmpty()) {
 			q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
 		}
-		List results = q.listAQL();
+		List results = q.list();
 
 		s.flush();
 		txn.commit();
 		s.close();
 
 		List<String> dadlResults = new ArrayList<String>();
-		DADLBinding binding = new DADLBinding();
 		for (Object arr : results) {
 			if (arr.getClass().isArray()) {
 				for (int i = 0; i < Array.getLength(arr); i++)
-				{
-					String str = binding.toDADLString(Array.get(arr, i));
-					if (!dadlResults.contains(str)) {
-						dadlResults.add(str);						
-					}				
+				{		
+					generateReturnDADL(Array.get(arr, i), dadlResults);
 				}			
 			}
 			else {	
-				String str = binding.toDADLString(arr);
-				if (!dadlResults.contains(str)) {
-					dadlResults.add(str);						
-				}				
+				generateReturnDADL(arr, dadlResults);
 			}
 		}
 
 		return dadlResults;
 
+	}
+	
+	protected void generateReturnDADL(Object obj, List<String> dadlResults) throws Exception {
+		
+		if (obj instanceof Locatable) {			
+			DADLBinding binding = new DADLBinding();
+			Locatable loc = (Locatable) obj;
+			String str = binding.toDADLString(loc);
+			if (!dadlResults.contains(str)) {
+				dadlResults.add(str);						
+			}		
+			
+			for (Object associatedObject : loc.getAssociatedObjects().values()) {
+				generateReturnDADL(associatedObject, dadlResults);
+			}
+		}
+		
 	}
 
 	@Override
@@ -210,6 +221,7 @@ public class AQLExecuteImpl implements AQLExecute {
 	public int update(@WebParam String aql) {
 
 		return update(aql, null);
+		
 	}
 
 //	@Override
@@ -219,6 +231,7 @@ public class AQLExecuteImpl implements AQLExecute {
 			@WebParam Map<String, Object> parameters) {
 
 		return executeUpdate(aql, parameters);
+		
 	}
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {
@@ -226,9 +239,9 @@ public class AQLExecuteImpl implements AQLExecute {
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
 
-		Query q = s.createAQLQuery(aql);
+		Query q = s.createQuery(aql);
 		passParameters(q, parameters);
-		int ret = q.executeUpdateAQL();
+		int ret = q.executeUpdate();
 
 		s.flush();
 		txn.commit();

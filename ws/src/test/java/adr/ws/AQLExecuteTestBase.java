@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.internal.util.ReflectHelper;
@@ -22,8 +23,8 @@ import org.openehr.rm.util.SkeletonGenerator;
 import se.acode.openehr.parser.ADLParser;
 
 public class AQLExecuteTestBase {
-	protected Map<String, String> archetypes = new HashMap<String, String>();
-	protected Map<String, String> arms = new HashMap<String, String>();
+	protected Map<String, String> archetypes = new LinkedHashMap<String, String>();
+	protected Map<String, String> arms = new LinkedHashMap<String, String>();
 
 	public AQLExecuteTestBase() throws IOException {
 		archetypes
@@ -32,20 +33,6 @@ public class AQLExecuteTestBase {
 		arms.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
 				readLines("../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
-
-		archetypes
-				.put("openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-						readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
-		arms.put(
-				"openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
-
-		archetypes
-				.put("openEHR-EHR-COMPOSITION.visit.v3",
-						readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.adl"));
-		arms.put(
-				"openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.adl.v1",
@@ -81,6 +68,20 @@ public class AQLExecuteTestBase {
 		arms.put(
 				"openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1",
 				readLines("../../CDRDocument/knowledge/archetype/ZJU/ad/openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1.arm.xml"));
+
+		archetypes
+				.put("openEHR-EHR-COMPOSITION.visit.v3",
+						readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.adl"));
+		arms.put(
+				"openEHR-EHR-COMPOSITION.visit.v3",
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
+
+		archetypes
+				.put("openEHR-DEMOGRAPHIC-PERSON.patient.v1",
+						readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
+		arms.put(
+				"openEHR-DEMOGRAPHIC-PERSON.patient.v1",
+				readLines("../../CDRDocument/knowledge/archetype/ZJU/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
 	}
 
 	protected String[] getDadlFiles() {
@@ -89,8 +90,8 @@ public class AQLExecuteTestBase {
 				"../../CDRDocument/knowledge/archetype/CKM/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", };
 	}
 
-	protected Map<HashMap<String, Object>, String> getArchetypeValues() {
-		Map<HashMap<String, Object>, String> results = new HashMap<HashMap<String, Object>, String>();
+	protected List<Map<HashMap<String, Object>, String>> getArchetypeValues() {
+		Map<HashMap<String, Object>, String> patients = new HashMap<HashMap<String, Object>, String>();
 
 		{
 			HashMap<String, Object> patient1 = new HashMap<String, Object>();
@@ -100,7 +101,7 @@ public class AQLExecuteTestBase {
 					"1984-08-11T19:20:30+08:00");
 			patient1.put("/details[at0001]/items[at0009]/value/value",
 					"zhangsan");
-			results.put(patient1, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
+			patients.put(patient1, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
 		}
 
 		{
@@ -110,7 +111,7 @@ public class AQLExecuteTestBase {
 			patient2.put("/details[at0001]/items[at0004]/value/value",
 					"1986-08-11T19:20:30+08:00");
 			patient2.put("/details[at0001]/items[at0009]/value/value", "lisi");
-			results.put(patient2, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
+			patients.put(patient2, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
 		}
 
 		{
@@ -120,8 +121,10 @@ public class AQLExecuteTestBase {
 			patient3.put("/details[at0001]/items[at0004]/value/value",
 					"1988-08-11T19:20:30+08:00");
 			patient3.put("/details[at0001]/items[at0009]/value/value", "wangwu");
-			results.put(patient3, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
+			patients.put(patient3, "openEHR-DEMOGRAPHIC-PERSON.patient.v1");
 		}
+
+		Map<HashMap<String, Object>, String> visits = new HashMap<HashMap<String, Object>, String>();
 
 		{
 			HashMap<String, Object> visit1 = new HashMap<String, Object>();
@@ -132,7 +135,7 @@ public class AQLExecuteTestBase {
 			visit1.put(
 					"/context/other_context[at0001]/items[at0015]/value/value",
 					"patient1");
-			results.put(visit1, "openEHR-EHR-COMPOSITION.visit.v3");
+			visits.put(visit1, "openEHR-EHR-COMPOSITION.visit.v3");
 		}
 
 		{
@@ -144,7 +147,7 @@ public class AQLExecuteTestBase {
 			visit2.put(
 					"/context/other_context[at0001]/items[at0015]/value/value",
 					"patient1");
-			results.put(visit2, "openEHR-EHR-COMPOSITION.visit.v3");
+			visits.put(visit2, "openEHR-EHR-COMPOSITION.visit.v3");
 		}
 
 		{
@@ -156,8 +159,10 @@ public class AQLExecuteTestBase {
 			visit3.put(
 					"/context/other_context[at0001]/items[at0015]/value/value",
 					"patient2");
-			results.put(visit3, "openEHR-EHR-COMPOSITION.visit.v3");
+			visits.put(visit3, "openEHR-EHR-COMPOSITION.visit.v3");
 		}
+
+		Map<HashMap<String, Object>, String> others = new HashMap<HashMap<String, Object>, String>();
 
 		{
 			HashMap<String, Object> other_cognitions_scale_exams1 = new HashMap<String, Object>();
@@ -175,7 +180,7 @@ public class AQLExecuteTestBase {
 			other_cognitions_scale_exams1
 					.put("/data[at0001]/events[at0002]/data[at0003]/items[at0004]/items[at0096]/value/magnitude",
 							6);
-			results.put(other_cognitions_scale_exams1,
+			others.put(other_cognitions_scale_exams1,
 					"openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1");
 		}
 
@@ -191,8 +196,13 @@ public class AQLExecuteTestBase {
 			mmse1.put(
 					"/data[at0001]/events[at0002]/data[at0003]/items[at0004]/items[at0012]/value/value",
 					false);
-			results.put(mmse1, "openEHR-EHR-OBSERVATION.mmse.v1");
+			others.put(mmse1, "openEHR-EHR-OBSERVATION.mmse.v1");
 		}
+
+		List<Map<HashMap<String, Object>, String>> results = new ArrayList<Map<HashMap<String, Object>, String>>();
+		results.add(patients);
+		results.add(visits);
+		results.add(others);
 
 		return results;
 	}
@@ -201,24 +211,27 @@ public class AQLExecuteTestBase {
 		AQLExecute aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
-		List<String> dadls = new ArrayList<String>();
-		Map<HashMap<String, Object>, String> archetypeValues = getArchetypeValues();
-		for (HashMap<String, Object> values : archetypeValues.keySet()) {
-			String archetypeId = archetypeValues.get(values);
-			SkeletonGenerator generator = SkeletonGenerator.getInstance();
-			String archetypeString = archetypes.get(archetypeId);
-			ADLParser parser = new ADLParser(archetypeString);
-			Archetype archetype = parser.parse();
-			Object result = generator.create(archetype,
-					GenerationStrategy.MAXIMUM_EMPTY);
-			if (result instanceof Locatable) {
-				Locatable loc = (Locatable) result;
-				ReflectHelper.setArchetypeValue(loc, values);
-				dadls.add(binding.toDADLString(loc));
-			}
-		}
+		List<Map<HashMap<String, Object>, String>> list = getArchetypeValues();
+		for (Map<HashMap<String, Object>, String> archetypeValues : list) {
+			List<String> dadls = new ArrayList<String>();
 
-		aqlImpl.insert(dadls);
+			for (HashMap<String, Object> values : archetypeValues.keySet()) {
+				String archetypeId = archetypeValues.get(values);
+				SkeletonGenerator generator = SkeletonGenerator.getInstance();
+				String archetypeString = archetypes.get(archetypeId);
+				ADLParser parser = new ADLParser(archetypeString);
+				Archetype archetype = parser.parse();
+				Object result = generator.create(archetype,
+						GenerationStrategy.MAXIMUM_EMPTY);
+				if (result instanceof Locatable) {
+					Locatable loc = (Locatable) result;
+					ReflectHelper.setArchetypeValue(loc, values);
+					dadls.add(binding.toDADLString(loc));
+				}
+			}
+
+			aqlImpl.insert(dadls);
+		}
 	}
 
 	protected void cleanTestBaseData() {
