@@ -40,7 +40,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 5);
+			assertEquals(results.size(), 3);
 		}
 
 		{
@@ -56,7 +56,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 4);
+			assertEquals(results.size(), 2);
 		}
 
 		{
@@ -90,7 +90,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 5);
+			assertEquals(results.size(), 3);
 		}
 
 		{
@@ -108,7 +108,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 4);
+			assertEquals(results.size(), 2);
 		}
 
 		{
@@ -538,7 +538,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "where o#/context/other_context[at0001]/items[at0015]/value/value = 'patient1'";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 3);
+			assertEquals(results.size(), 2);
 		}
 
 		{
@@ -547,7 +547,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "where o#/uid/value = 'visit1' and o#/context/other_context[at0001]/items[at0015]/value/value = 'patient1'";
 			List<String> results = aqlImpl.select(query, null);
 
-			assertEquals(results.size(), 2);
+			assertEquals(results.size(), 1);
 		}
 
 		cleanTestBaseData();
@@ -757,7 +757,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			parameters.put("PatientId", "patient1");
 			List<String> results = aqlImpl.select(query, null, parameters);
 
-			assertEquals(results.size(), 2);
+			assertEquals(results.size(), 1);
 		}
 
 		cleanTestBaseData();
