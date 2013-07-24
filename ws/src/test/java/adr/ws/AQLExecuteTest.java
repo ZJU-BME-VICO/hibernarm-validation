@@ -140,7 +140,8 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		DADLBinding binding = new DADLBinding();
 
 		{
-			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o ";
+			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "order by o#/uid/value asc";
 			List<String> results = aqlImpl.select(query, "", null);
 
 			assertEquals(results.size(), 3);
@@ -254,6 +255,8 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v ";
 			List<String> results = aqlImpl.select(query, null);
 
+			assertEquals(results.size(), 6);
+
 			List<String> patients = new ArrayList<String>();
 			List<String> visits = new ArrayList<String>();
 			for (String arr : results) {
@@ -273,6 +276,110 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			assertEquals(visits.size(), 3);
 		}
 
+		{
+			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value as p ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as v, openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 6);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 3);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join fetch v#/context/other_context[at0001]/items[at0015]/value/value as p ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
 		cleanTestBaseData();
 	}
 
@@ -287,7 +394,8 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		DADLBinding binding = new DADLBinding();
 
 		{
-			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o ";
+			String query = "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "order by o#/uid/value asc";
 			List<String> results = aqlImpl.select(query, "", null);
 
 			assertEquals(results.size(), 3);
@@ -433,7 +541,8 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "select o "
-					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o ";
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "order by o#/uid/value asc";
 			List<String> results = aqlImpl.select(query, null);
 
 			assertEquals(results.size(), 3);
@@ -690,6 +799,197 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v ";
 			List<String> results = aqlImpl.select(query, null);
 
+			assertEquals(results.size(), 6);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 3);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value as p ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 3);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 0);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 3);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 0);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select p, v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value as p ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select p, v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v, openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p "
+					+ "join v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 6);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 3);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join fetch v#/context/other_context[at0001]/items[at0015]/value/value as p ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v "
+					+ "join fetch v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 5);
+
+			List<String> patients = new ArrayList<String>();
+			List<String> visits = new ArrayList<String>();
+			for (String arr : results) {
+				DADLParser parser = new DADLParser(arr);
+				ContentObject contentObj = parser.parse();
+				Locatable loc = (Locatable) binding.bind(contentObj);			
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-DEMOGRAPHIC-PERSON.patient.v1") == 0) {
+					patients.add(arr);	
+				}
+				
+				if (loc.getArchetypeNodeId().compareToIgnoreCase("openEHR-EHR-COMPOSITION.visit.v3") == 0) {
+					visits.add(arr);	
+				}
+			}
+
+			assertEquals(patients.size(), 2);
+			assertEquals(visits.size(), 3);
+		}
+
+		{
+			String query = "select p, v "
+					+ "from openEHR-EHR-COMPOSITION.visit.v3 as v, openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p "
+					+ "join fetch v#/context/other_context[at0001]/items[at0015]/value/value ";
+			List<String> results = aqlImpl.select(query, null);
+
+			assertEquals(results.size(), 6);
+
 			List<String> patients = new ArrayList<String>();
 			List<String> visits = new ArrayList<String>();
 			for (String arr : results) {
@@ -725,9 +1025,9 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		{
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
-					+ "where o#/details[at0001]/items[at0009]/value/value = :Name";
+					+ "where o#/details[at0001]/items[at0009]/value/value = :name";
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("Name", "lisi");
+			parameters.put("name", "lisi");
 			List<String> results = aqlImpl.select(query, null, parameters);
 
 			assertEquals(results.size(), 1);
