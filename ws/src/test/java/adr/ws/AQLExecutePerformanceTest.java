@@ -23,7 +23,7 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 	}
 
 	@Test
-	public void testInsert() throws Exception {
+	public void testInsert1000() throws Exception {
 		reconfigure();
 
 		cleanTestBaseData();
@@ -61,7 +61,7 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 	}
 
 	@Test
-	public void testSelect() throws Exception {
+	public void testSelect1000() throws Exception {
 		reconfigure();
 
 		cleanTestBaseData();
@@ -69,11 +69,11 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 
 		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		long start = System.currentTimeMillis();
+		
 		for (int i = 0; i < 1000; i++) {
 			String query = "select o "
-					+ "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o "
-					+ "order by o#/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude asc";
-			aqlImpl.select(query, null);
+					+ "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o ";
+			aqlImpl.select(query);
 		}
 		
 		long end = System.currentTimeMillis();

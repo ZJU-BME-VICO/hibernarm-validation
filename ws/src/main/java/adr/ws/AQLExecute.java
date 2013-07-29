@@ -21,26 +21,20 @@ public interface AQLExecute {
 	 */
 	@WebMethod
 	@WebResult
-	Boolean reconfigure();
+	int reconfigure();
 
 	/**
 	 * @param archetypeId
 	 * @param archetype
-	 * @return
-	 */
-	@WebMethod
-	@WebResult
-	String registerArchetype(@WebParam String archetypeId,
-			@WebParam String archetype);
-
-	/**
-	 * @param archetypeId
 	 * @param arm
 	 * @return
 	 */
 	@WebMethod
 	@WebResult
-	String registerArm(@WebParam String archetypeId, @WebParam String arm);
+	void registerArchetype(
+			@WebParam String archetypeId,
+			@WebParam String archetype,
+			@WebParam String arm);
 
 	/**
 	 * @param aql
@@ -50,7 +44,28 @@ public interface AQLExecute {
 	 */
 	@WebMethod
 	@WebResult
-	List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception;
+	List<String> select(@WebParam String aql) throws Exception;
+
+	/**
+	 * @param aql
+	 * @return
+	 * @throws Exception
+	 */
+//	@WebMethod
+//	@WebResult
+//	List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception;
+
+	/**
+	 * @param aql
+	 * @param listParameterName
+	 * @param listParameterValue
+	 * @return
+	 * @throws Exception
+	 */
+//	@WebMethod
+//	@WebResult
+//	List<String> select(@WebParam String aql, 
+//			@WebParam Map<String, Object> parameters) throws Exception;
 
 	/**
 	 * @param aql

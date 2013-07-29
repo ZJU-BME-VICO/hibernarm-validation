@@ -51,7 +51,7 @@ public class AQLExecuteImpl implements AQLExecute {
 	@Override
 	@WebMethod
 	@WebResult
-	public Boolean reconfigure() {
+	public int reconfigure() {
 		if (sessionFactory != null) {
 			sessionFactory.close();
 		}
@@ -76,36 +76,50 @@ public class AQLExecuteImpl implements AQLExecute {
 				cfg.addArchetype(is);
 			}
 		} catch (Exception e) {
-			return false;
+			return -1;
 		}
 			
 		sessionFactory = cfg.buildSessionFactory();
 
-		return true;
+		return 0;
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
-	public String registerArchetype(@WebParam String archetypeId,
-			@WebParam String archetype) {
-		return archetypes.put(archetypeId, archetype);
+	public void registerArchetype(
+			@WebParam String archetypeId,
+			@WebParam String archetype,
+			@WebParam String arm) {
+		archetypes.put(archetypeId, archetype);
+		arms.put(archetypeId, arm);
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
-	public String registerArm(@WebParam String archetypeId, @WebParam String arm) {
-		return arms.put(archetypeId, arm);
+	public List<String> select(@WebParam String aql) throws Exception {
+
+		return select(aql, null, null);
+
 	}
 
-	@Override
-	@WebMethod
+//	@Override
+//	@WebMethod
 	@WebResult
-	public List<String> select(@WebParam String aql,
-			@WebParam String archetypeId) throws Exception {
+	public List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception {
 
 		return select(aql, archetypeId, null);
+
+	}
+
+//	@Override
+//	@WebMethod
+	@WebResult
+	public List<String> select(@WebParam String aql,
+			@WebParam Map<String, Object> parameters) throws Exception {
+
+		return select(aql, null, parameters);
 
 	}
 

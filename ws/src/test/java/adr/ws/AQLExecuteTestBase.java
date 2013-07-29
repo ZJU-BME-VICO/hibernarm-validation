@@ -1,7 +1,5 @@
 package adr.ws;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -262,14 +260,10 @@ public class AQLExecuteTestBase {
 		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 
 		for (String str : archetypes.keySet()) {
-			aqlImpl.registerArchetype(str, archetypes.get(str));
+			aqlImpl.registerArchetype(str, archetypes.get(str), arms.get(str));
 		}
 
-		for (String str : arms.keySet()) {
-			aqlImpl.registerArm(str, arms.get(str));
-		}
-
-		assertTrue(aqlImpl.reconfigure());
+		aqlImpl.reconfigure();
 	}
 
 }

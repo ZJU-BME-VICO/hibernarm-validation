@@ -38,7 +38,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 3);
 		}
@@ -54,7 +54,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 2);
 		}
@@ -69,7 +69,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 0);
 		}
@@ -88,7 +88,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 3);
 		}
@@ -106,7 +106,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 2);
 		}
@@ -121,7 +121,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 0);
 		}
@@ -154,7 +154,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		aqlImpl.insert(dadls);
 
 		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
-		assertEquals(aqlImpl.select(query, null).size(), 2);
+		assertEquals(aqlImpl.select(query).size(), 2);
 
 		cleanTestBaseData();
 	}
@@ -173,7 +173,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "order by o#/uid/value asc";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 3);
 
@@ -227,7 +227,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/details[at0001]/items[at0009]/value/value = 'lisi'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
@@ -251,7 +251,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/uid/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
@@ -275,7 +275,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-EHR-COMPOSITION.visit.v3 as o "
 					+ "where o#/context/other_context[at0001]/items[at0015]/value/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 2);
 		}
@@ -284,7 +284,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-EHR-COMPOSITION.visit.v3 as o "
 					+ "where o#/uid/value = 'visit1' and o#/context/other_context[at0001]/items[at0015]/value/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 		}
@@ -427,7 +427,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		{
 			String query = "select p, v " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 6);
 
@@ -456,7 +456,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p, v " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p, openEHR-EHR-COMPOSITION.visit.v3 as v " +
 					"where p#/uid/value = v#/context/other_context[at0001]/items[at0015]/value/value ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -498,7 +498,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select v " +
 					"from openEHR-EHR-COMPOSITION.visit.v3 as v " +
 					"join fetch v#/context/other_context[at0001]/items[at0015]/value/value as p ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -540,7 +540,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"join fetch p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -569,7 +569,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select distinct p " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"join fetch p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -611,7 +611,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select v " +
 					"from openEHR-EHR-COMPOSITION.visit.v3 as v " +
 					"join v#/context/other_context[at0001]/items[at0015]/value/value as p ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 3);
 
@@ -640,7 +640,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p, v " +
 					"from openEHR-EHR-COMPOSITION.visit.v3 as v " +
 					"join v#/context/other_context[at0001]/items[at0015]/value/value as p ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -682,7 +682,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"join p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 2);
 
@@ -711,7 +711,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p, v " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"join p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 5);
 
@@ -740,7 +740,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"left join p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 3);
 
@@ -769,7 +769,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select p, v " +
 					"from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as p " +
 					"left join p#/details[at0001]/items[at0032]/onetomany as v ";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 6);
 
@@ -862,7 +862,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/uid/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
@@ -897,7 +897,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/uid/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
@@ -934,7 +934,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/uid/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
@@ -972,7 +972,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			String query = "select o "
 					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
 					+ "where o#/uid/value = 'patient1'";
-			List<String> results = aqlImpl.select(query, null);
+			List<String> results = aqlImpl.select(query);
 
 			assertEquals(results.size(), 1);
 
