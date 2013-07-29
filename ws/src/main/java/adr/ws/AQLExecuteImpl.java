@@ -154,12 +154,12 @@ public class AQLExecuteImpl implements AQLExecute {
 			Locatable loc = (Locatable) obj;
 			String str = binding.toDADLString(loc);
 			if (!dadlResults.contains(str)) {
-				dadlResults.add(str);						
-			}		
-			
-			for (Object associatedObject : loc.getAssociatedObjects().values()) {
-				generateReturnDADL(associatedObject, dadlResults);
-			}
+				dadlResults.add(str);		
+				
+				for (Object associatedObject : loc.getAssociatedObjects().values()) {
+					generateReturnDADL(associatedObject, dadlResults);
+				}					
+			}	
 		}
 		
 	}
