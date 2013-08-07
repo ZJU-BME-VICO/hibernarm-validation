@@ -1,4 +1,6 @@
-package adr.ws;
+package hibernarm.service.ws;
+
+import hibernarm.service.ws.AQLExecuteImpl;
 
 import java.io.File;
 import java.io.FileInputStream;

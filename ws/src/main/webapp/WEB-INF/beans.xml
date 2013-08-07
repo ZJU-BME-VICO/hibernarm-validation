@@ -13,6 +13,6 @@
 
 	<jaxws:endpoint 
 	  id="AQLExecute" 
-	  implementor="adr.ws.AQLExecuteImpl" 
+	  implementor="hibernarm.service.ws.AQLExecuteImpl" 
 	  address="/AQLExecute" />     
 </beans>

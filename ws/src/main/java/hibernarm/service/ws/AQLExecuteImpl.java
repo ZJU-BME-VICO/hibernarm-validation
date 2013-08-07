@@ -1,4 +1,4 @@
-package adr.ws;
+package hibernarm.service.ws;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import org.openehr.rm.binding.DADLBinding;
 import org.openehr.rm.binding.DADLBindingException;
 import org.openehr.rm.common.archetyped.Locatable;
 
-@WebService(endpointInterface = "adr.ws.AQLExecute")
+@WebService(endpointInterface = "hibernarm.service.ws.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
 
 	private static Configuration cfg;

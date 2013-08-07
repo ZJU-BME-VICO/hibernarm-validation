@@ -1,9 +1,7 @@
-package adr.ws;
+package hibernarm.service.ws;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
