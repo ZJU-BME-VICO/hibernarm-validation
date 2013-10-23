@@ -18,6 +18,8 @@
 				<version>2.1</version>
 				<configuration>
 					<url>http://localhost:9090/manager/text</url>
+					<username>admin</username>
+					<password>admin</password>
 					<path>/hibernarm-service</path>
 					<charset>${project.build.sourceEncoding}</charset>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
