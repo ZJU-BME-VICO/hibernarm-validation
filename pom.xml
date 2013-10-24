@@ -11,7 +11,7 @@
 		<cxf.version>2.7.4</cxf.version>
 		<openEHR.version>1.0.3-SNAPSHOT</openEHR.version>
 		<spring.framework.version>3.2.2.RELEASE</spring.framework.version>
-		<hibernarm.version>4.2.6-SNAPSHOT</hibernarm.version>
+		<hibernarm.version>4.2.7-SNAPSHOT</hibernarm.version>
 		<aspectj.version>1.7.2</aspectj.version>
 	</properties>
 	<build>

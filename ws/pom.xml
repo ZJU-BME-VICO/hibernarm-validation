@@ -10,6 +10,39 @@
 	<packaging>war</packaging>
 	<name>Simple CXF Java-first SOAP project using Spring configuration</name>
 	<description>Simple CXF Java-first SOAP project using Spring configuration</description>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<tomcat.url>http://localhost:9090/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-service</database.url>
+				<database.username>sa</database.username>
+				<database.password>sa</database.password>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<env>production</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+				<tomcat.url>http://172.17.0.88:9090/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://172.17.0.86:1433;DatabaseName=hibernarm-service</database.url>
+				<database.username>sa</database.username>
+				<database.password>Sql0808</database.password>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -17,7 +50,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<url>http://localhost:9090/manager/text</url>
+					<url>${tomcat.url}</url>
 					<username>admin</username>
 					<password>admin</password>
 					<path>/hibernarm-service</path>
@@ -27,6 +60,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<dependencies>
 		<dependency>
