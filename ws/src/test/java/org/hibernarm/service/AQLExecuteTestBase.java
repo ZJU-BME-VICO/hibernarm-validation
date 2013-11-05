@@ -28,12 +28,12 @@ public class AQLExecuteTestBase {
 	protected Map<String, String> arms = new LinkedHashMap<String, String>();
 
 	public AQLExecuteTestBase() throws IOException {
-//		archetypes
-//				.put("openEHR-EHR-OBSERVATION.blood_pressure.v1",
-//						readLines("../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
-//		arms.put(
-//				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-//				readLines("../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
+		archetypes
+				.put("openEHR-EHR-OBSERVATION.blood_pressure.v1",
+						readLines("../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
+		arms.put(
+				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
+				readLines("../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.adl.v1",
@@ -94,8 +94,8 @@ public class AQLExecuteTestBase {
 
 	protected String[] getDadlFiles() {
 		return new String[] {
-//				"../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
-//				"../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", 
+				"../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.1.dadl",
+				"../../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.2.dadl", 
 				};
 	}
 

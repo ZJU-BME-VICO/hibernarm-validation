@@ -30,33 +30,33 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-//		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-//
-//		long start = System.currentTimeMillis();
-//		List<String> dadls = new ArrayList<String>();
-//		for (int i = 0; i < 1000; i++) {
-//			if (i % 100 == 0) {
-//				System.out.println(i);				
-//			}
-//			
-//			for (String dadl : getDadlFiles()) {
-//				File file = new File(dadl);
-//				InputStream is = new FileInputStream(file);
-//				DADLParser parser = new DADLParser(is);
-//				ContentObject contentObj = parser.parse();
-//				DADLBinding binding = new DADLBinding();
-//				Observation bp = (Observation) binding.bind(contentObj);
-//				UUID uuid = UUID.randomUUID();
-//				HierObjectID uid = new HierObjectID(uuid.toString());
-//				bp.setUid(uid);
-//				dadls.add(binding.toDADLString(bp));
-//			}			
-//		}
-//
-//		aqlImpl.insert(dadls);
-//
-//		long end = System.currentTimeMillis();
-//		System.out.println(end - start);
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+
+		long start = System.currentTimeMillis();
+		List<String> dadls = new ArrayList<String>();
+		for (int i = 0; i < 1000; i++) {
+			if (i % 100 == 0) {
+				System.out.println(i);				
+			}
+			
+			for (String dadl : getDadlFiles()) {
+				File file = new File(dadl);
+				InputStream is = new FileInputStream(file);
+				DADLParser parser = new DADLParser(is);
+				ContentObject contentObj = parser.parse();
+				DADLBinding binding = new DADLBinding();
+				Observation bp = (Observation) binding.bind(contentObj);
+				UUID uuid = UUID.randomUUID();
+				HierObjectID uid = new HierObjectID(uuid.toString());
+				bp.setUid(uid);
+				dadls.add(binding.toDADLString(bp));
+			}			
+		}
+
+		aqlImpl.insert(dadls);
+
+		long end = System.currentTimeMillis();
+		System.out.println(end - start);
 
 		cleanTestBaseData();
 	}
@@ -68,17 +68,17 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-//		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-//		long start = System.currentTimeMillis();
-//		
-//		for (int i = 0; i < 1000; i++) {
-//			String query = "select o "
-//					+ "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o ";
-//			aqlImpl.select(query);
-//		}
-//		
-//		long end = System.currentTimeMillis();
-//		System.out.println(end - start);
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+		long start = System.currentTimeMillis();
+		
+		for (int i = 0; i < 1000; i++) {
+			String query = "select o "
+					+ "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o ";
+			aqlImpl.select(query);
+		}
+		
+		long end = System.currentTimeMillis();
+		System.out.println(end - start);
 
 		cleanTestBaseData();
 	}

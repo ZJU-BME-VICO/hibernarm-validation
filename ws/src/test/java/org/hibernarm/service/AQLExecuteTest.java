@@ -137,25 +137,25 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-//		List<String> dadls = new ArrayList<String>();
-//		for (String dadl : getDadlFiles()) {
-//			File file = new File(dadl);
-//			InputStream is = new FileInputStream(file);
-//			DADLParser parser = new DADLParser(is);
-//			ContentObject contentObj = parser.parse();
-//			DADLBinding binding = new DADLBinding();
-//			Observation bp = (Observation) binding.bind(contentObj);
-//			UUID uuid = UUID.randomUUID();
-//			HierObjectID uid = new HierObjectID(uuid.toString());
-//			bp.setUid(uid);
-//			dadls.add(binding.toDADLString(bp));
-//		}
-//
-//		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-//		aqlImpl.insert(dadls);
-//
-//		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
-//		assertEquals(aqlImpl.select(query).size(), 2);
+		List<String> dadls = new ArrayList<String>();
+		for (String dadl : getDadlFiles()) {
+			File file = new File(dadl);
+			InputStream is = new FileInputStream(file);
+			DADLParser parser = new DADLParser(is);
+			ContentObject contentObj = parser.parse();
+			DADLBinding binding = new DADLBinding();
+			Observation bp = (Observation) binding.bind(contentObj);
+			UUID uuid = UUID.randomUUID();
+			HierObjectID uid = new HierObjectID(uuid.toString());
+			bp.setUid(uid);
+			dadls.add(binding.toDADLString(bp));
+		}
+
+		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+		aqlImpl.insert(dadls);
+
+		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
+		assertEquals(aqlImpl.select(query).size(), 2);
 
 		cleanTestBaseData();
 	}
