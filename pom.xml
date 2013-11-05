@@ -1,19 +1,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>hibernarm-service</groupId>
+	<groupId>hibernarm</groupId>
 	<artifactId>hibernarm-service</artifactId>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
 	<name>Hibernarm Service</name>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.7.4</cxf.version>
-		<openEHR.version>1.0.3-SNAPSHOT</openEHR.version>
 		<spring.framework.version>3.2.2.RELEASE</spring.framework.version>
 		<hibernarm.version>4.2.7-SNAPSHOT</hibernarm.version>
 		<aspectj.version>1.7.2</aspectj.version>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<tomcat.url>http://localhost:9090/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-service</database.url>
+				<database.username>sa</database.username>
+				<database.password>sa</database.password>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<env>production</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+				<tomcat.url>http://172.17.0.88:9090/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://172.17.0.86:1433;DatabaseName=hibernarm-service</database.url>
+				<database.username>sa</database.username>
+				<database.password>Sql0808</database.password>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -38,7 +71,33 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<url>${tomcat.url}</url>
+					<username>admin</username>
+					<password>admin</password>
+					<path>/hibernarm-service</path>
+					<charset>${project.build.sourceEncoding}</charset>
+					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+					<port>9091</port>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -114,7 +173,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<modules>
-		<module>ws</module>
-	</modules>
 </project>
