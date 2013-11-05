@@ -1,7 +1,6 @@
-package hibernarm.service.ws;
+package org.hibernarm.service;
 
 import static org.junit.Assert.*;
-import hibernarm.service.ws.AQLExecuteImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.hibernarm.service.AQLExecuteImpl;
 import org.junit.Test;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;

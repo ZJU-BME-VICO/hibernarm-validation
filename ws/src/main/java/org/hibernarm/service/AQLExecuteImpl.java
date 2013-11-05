@@ -1,4 +1,4 @@
-package hibernarm.service.ws;
+package org.hibernarm.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

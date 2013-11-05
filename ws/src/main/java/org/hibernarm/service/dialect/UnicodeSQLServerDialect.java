@@ -1,4 +1,4 @@
-package hibernarm.service.ws.dialect;
+package org.hibernarm.service.dialect;
 
 import java.sql.Types;
 

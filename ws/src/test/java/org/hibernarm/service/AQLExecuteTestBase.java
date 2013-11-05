@@ -1,7 +1,4 @@
-package hibernarm.service.ws;
-
-import hibernarm.service.ws.AQLExecute;
-import hibernarm.service.ws.AQLExecuteImpl;
+package org.hibernarm.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernarm.service.AQLExecute;
+import org.hibernarm.service.AQLExecuteImpl;
 import org.hibernate.internal.util.ReflectHelper;
 import org.openehr.am.archetype.Archetype;
 import org.openehr.rm.binding.DADLBinding;

@@ -1,4 +1,4 @@
-package hibernarm.service.ws;
+package org.hibernarm.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
