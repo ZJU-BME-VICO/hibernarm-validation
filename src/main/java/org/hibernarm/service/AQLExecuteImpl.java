@@ -19,6 +19,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.transform.Transformers;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;
@@ -36,8 +38,11 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	private static Map<String, String> archetypes;
 	private static Map<String, String> arms;
+	
+	private static boolean serviceStatus = true;
 
 	public AQLExecuteImpl() {
+		
 		if (archetypes == null) {
 			archetypes = new HashMap<String, String>();
 		}
@@ -47,12 +52,47 @@ public class AQLExecuteImpl implements AQLExecute {
 		}
 		
 		reconfigure();
+		
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public int start() {
+		
+		serviceStatus = true;
+		return 0;
+		
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public int stop() {
+		
+		serviceStatus = false;
+		return 0;
+		
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public boolean getServiceStatus() {
+		
+		return serviceStatus;
+		
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public int reconfigure() {
+		
+		if (getServiceStatus()) {
+			return -1;
+		}
+		
 		if (sessionFactory != null) {
 			sessionFactory.close();
 		}
@@ -77,23 +117,34 @@ public class AQLExecuteImpl implements AQLExecute {
 				cfg.addArchetype(is);
 			}
 		} catch (Exception e) {
-			return -1;
+			return -2;
 		}
-			
-		sessionFactory = cfg.buildSessionFactory();
+
+		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+				.applySettings(cfg.getProperties()).buildServiceRegistry();
+		sessionFactory = cfg.buildSessionFactory(serviceRegistry);
 
 		return 0;
+		
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
-	public void registerArchetype(
+	public int registerArchetype(
 			@WebParam String archetypeId,
 			@WebParam String archetype,
 			@WebParam String arm) {
+		
+		if (getServiceStatus()) {
+			return -1;
+		}
+		
 		archetypes.put(archetypeId, archetype);
 		arms.put(archetypeId, arm);
+		
+		return 0;
+		
 	}
 
 	@Override
@@ -130,6 +181,10 @@ public class AQLExecuteImpl implements AQLExecute {
 	public List<String> select(@WebParam String aql,
 			@WebParam String archetypeId,
 			@WebParam Map<String, Object> parameters) throws Exception {
+
+		if (getServiceStatus()) {
+			return null;
+		}
 
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();
@@ -185,6 +240,10 @@ public class AQLExecuteImpl implements AQLExecute {
 	public void insert(@WebParam List<String> dadls)
 			throws UnsupportedEncodingException, ParseException,
 			DADLBindingException, RMObjectBuildingException {
+
+		if (getServiceStatus()) {
+			return;
+		}
 
 		List<Object> objects = new ArrayList<Object>();
 
@@ -250,6 +309,10 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {
+
+		if (getServiceStatus()) {
+			return -1;
+		}
 
 		Session s = sessionFactory.openSession();
 		Transaction txn = s.beginTransaction();

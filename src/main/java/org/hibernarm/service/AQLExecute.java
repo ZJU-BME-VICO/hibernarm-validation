@@ -17,6 +17,32 @@ public interface AQLExecute {
 
 	/**
 	 * @return
+	 * 0 success
+	 */
+	@WebMethod
+	@WebResult
+	int start();
+
+	/**
+	 * @return
+	 * 0 success
+	 */
+	@WebMethod
+	@WebResult
+	int stop();
+
+	/**
+	 * @return
+	 */
+	@WebMethod
+	@WebResult
+	boolean getServiceStatus();
+
+	/**
+	 * @return
+	 * 0 success
+	 * -1 service running
+	 * -2 internal error
 	 */
 	@WebMethod
 	@WebResult
@@ -27,10 +53,12 @@ public interface AQLExecute {
 	 * @param archetype
 	 * @param arm
 	 * @return
+	 * 0 success
+	 * -1 service running
 	 */
 	@WebMethod
 	@WebResult
-	void registerArchetype(
+	int registerArchetype(
 			@WebParam String archetypeId,
 			@WebParam String archetype,
 			@WebParam String arm);
@@ -39,6 +67,7 @@ public interface AQLExecute {
 	 * @param aql
 	 * @param archetypeId
 	 * @return
+	 * -1 service running
 	 * @throws Exception
 	 */
 	@WebMethod
@@ -48,6 +77,7 @@ public interface AQLExecute {
 	/**
 	 * @param aql
 	 * @return
+	 * -1 service running
 	 * @throws Exception
 	 */
 //	@WebMethod
@@ -59,6 +89,7 @@ public interface AQLExecute {
 	 * @param listParameterName
 	 * @param listParameterValue
 	 * @return
+	 * -1 service running
 	 * @throws Exception
 	 */
 //	@WebMethod
@@ -72,6 +103,7 @@ public interface AQLExecute {
 	 * @param listParameterName
 	 * @param listParameterValue
 	 * @return
+	 * -1 service running
 	 * @throws Exception
 	 */
 //	@WebMethod
@@ -83,6 +115,7 @@ public interface AQLExecute {
 	 * @param aql
 	 * @param parameters
 	 * @return
+	 * -1 service running
 	 * @throws UnsupportedEncodingException
 	 * @throws ParseException
 	 * @throws RMObjectBuildingException
@@ -97,6 +130,7 @@ public interface AQLExecute {
 	/**
 	 * @param aql
 	 * @return
+	 * -1 service running
 	 */
 	@WebMethod
 	@WebResult
@@ -106,6 +140,7 @@ public interface AQLExecute {
 	 * @param aql
 	 * @param parameters
 	 * @return
+	 * -1 service running
 	 */
 //	@WebMethod
 //	@WebResult
@@ -114,6 +149,7 @@ public interface AQLExecute {
 	/**
 	 * @param aql
 	 * @return
+	 * -1 service running
 	 */
 	@WebMethod
 	@WebResult
@@ -123,6 +159,7 @@ public interface AQLExecute {
 	 * @param aql
 	 * @param parameters
 	 * @return
+	 * -1 service running
 	 */
 //	@WebMethod
 //	@WebResult
