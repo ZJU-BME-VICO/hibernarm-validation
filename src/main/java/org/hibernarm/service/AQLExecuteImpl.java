@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -27,7 +28,7 @@ import org.openehr.rm.binding.DADLBinding;
 import org.openehr.rm.binding.DADLBindingException;
 import org.openehr.rm.common.archetyped.Locatable;
 
-@WebService(endpointInterface = "hibernarm.service.ws.AQLExecute")
+@WebService(endpointInterface = "org.hibernarm.service.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
 
 	private static Configuration cfg;
