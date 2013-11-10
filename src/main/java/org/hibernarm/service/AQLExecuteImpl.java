@@ -14,6 +14,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,11 +39,13 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	private static Map<String, String> archetypes;
 	private static Map<String, String> arms;
-	
+
 	private static boolean serviceStatus = true;
 
+	private static Logger logger = Logger.getLogger(AQLExecuteImpl.class.getName());
+
 	public AQLExecuteImpl() {
-		
+
 		if (archetypes == null) {
 			archetypes = new HashMap<String, String>();
 		}
@@ -50,70 +53,64 @@ public class AQLExecuteImpl implements AQLExecute {
 		if (arms == null) {
 			arms = new HashMap<String, String>();
 		}
-		
+
 		reconfigure();
-		
+
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public int start() {
-		
+
 		serviceStatus = true;
 		return 0;
-		
+
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public int stop() {
-		
+
 		serviceStatus = false;
 		return 0;
-		
+
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public boolean getServiceStatus() {
-		
+
 		return serviceStatus;
-		
+
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
 	public int reconfigure() {
-		
+
 		if (getServiceStatus()) {
 			return -1;
 		}
-		
+
 		if (sessionFactory != null) {
 			sessionFactory.close();
 		}
 
 		cfg = new Configuration();
 		cfg.configure();
-		
+
 		try {
 			for (String key : arms.keySet()) {
-//				InputStream is = new ByteArrayInputStream(arms.get(key)
-//						.getBytes("UTF-8"));
-				InputStream is = new ByteArrayInputStream(arms.get(key)
-						.getBytes());
+				InputStream is = new ByteArrayInputStream(arms.get(key).getBytes("UTF-8"));
 				cfg.addInputStream(is);
 			}
 
 			for (String key : archetypes.keySet()) {
-//				InputStream is = new ByteArrayInputStream(archetypes.get(key)
-//						.getBytes("UTF-8"));
-				InputStream is = new ByteArrayInputStream(archetypes.get(key)
-						.getBytes());
+				InputStream is = new ByteArrayInputStream(archetypes.get(key).getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
 		} catch (Exception e) {
@@ -125,26 +122,28 @@ public class AQLExecuteImpl implements AQLExecute {
 		sessionFactory = cfg.buildSessionFactory(serviceRegistry);
 
 		return 0;
-		
+
 	}
 
 	@Override
 	@WebMethod
 	@WebResult
-	public int registerArchetype(
-			@WebParam String archetypeId,
-			@WebParam String archetype,
-			@WebParam String arm) {
-		
+	public int registerArchetype(@WebParam String archetypeId,
+			@WebParam String archetype, @WebParam String arm) {
+
 		if (getServiceStatus()) {
 			return -1;
 		}
 		
+		logger.info("\n" + archetypeId);
+		logger.info("\n" + archetype);
+		logger.info("\n" + arm);
+
 		archetypes.put(archetypeId, archetype);
 		arms.put(archetypeId, arm);
-		
+
 		return 0;
-		
+
 	}
 
 	@Override
@@ -156,17 +155,18 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	}
 
-//	@Override
-//	@WebMethod
+	// @Override
+	// @WebMethod
 	@WebResult
-	public List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception {
+	public List<String> select(@WebParam String aql,
+			@WebParam String archetypeId) throws Exception {
 
 		return select(aql, archetypeId, null);
 
 	}
 
-//	@Override
-//	@WebMethod
+	// @Override
+	// @WebMethod
 	@WebResult
 	public List<String> select(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) throws Exception {
@@ -175,8 +175,8 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	}
 
-//	@Override
-//	@WebMethod
+	// @Override
+	// @WebMethod
 	@WebResult
 	public List<String> select(@WebParam String aql,
 			@WebParam String archetypeId,
@@ -203,12 +203,10 @@ public class AQLExecuteImpl implements AQLExecute {
 		List<String> dadlResults = new ArrayList<String>();
 		for (Object arr : results) {
 			if (arr.getClass().isArray()) {
-				for (int i = 0; i < Array.getLength(arr); i++)
-				{		
+				for (int i = 0; i < Array.getLength(arr); i++) {
 					generateReturnDADL(Array.get(arr, i), dadlResults);
-				}			
-			}
-			else {	
+				}
+			} else {
 				generateReturnDADL(arr, dadlResults);
 			}
 		}
@@ -216,22 +214,23 @@ public class AQLExecuteImpl implements AQLExecute {
 		return dadlResults;
 
 	}
-	
-	protected void generateReturnDADL(Object obj, List<String> dadlResults) throws Exception {
-		
-		if (obj instanceof Locatable) {			
+
+	protected void generateReturnDADL(Object obj, List<String> dadlResults)
+			throws Exception {
+
+		if (obj instanceof Locatable) {
 			DADLBinding binding = new DADLBinding();
 			Locatable loc = (Locatable) obj;
 			String str = binding.toDADLString(loc);
 			if (!dadlResults.contains(str)) {
-				dadlResults.add(str);		
-				
+				dadlResults.add(str);
+
 				for (Object associatedObject : loc.getAssociatedObjects().values()) {
 					generateReturnDADL(associatedObject, dadlResults);
-				}					
-			}	
+				}
+			}
 		}
-		
+
 	}
 
 	@Override
@@ -248,8 +247,7 @@ public class AQLExecuteImpl implements AQLExecute {
 		List<Object> objects = new ArrayList<Object>();
 
 		for (String dadl : dadls) {
-//			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
-			InputStream is = new ByteArrayInputStream(dadl.getBytes());
+			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
 			DADLParser parser = new DADLParser(is);
 			ContentObject contentObj = parser.parse();
 			DADLBinding binding = new DADLBinding();
@@ -279,8 +277,8 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	}
 
-//	@Override
-//	@WebMethod
+	// @Override
+	// @WebMethod
 	@WebResult
 	public int delete(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) {
@@ -295,17 +293,17 @@ public class AQLExecuteImpl implements AQLExecute {
 	public int update(@WebParam String aql) {
 
 		return update(aql, null);
-		
+
 	}
 
-//	@Override
-//	@WebMethod
+	// @Override
+	// @WebMethod
 	@WebResult
 	public int update(@WebParam String aql,
 			@WebParam Map<String, Object> parameters) {
 
 		return executeUpdate(aql, parameters);
-		
+
 	}
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {

@@ -16,6 +16,16 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+	
+	<servlet>
+		<servlet-name>log4j-init</servlet-name>
+		<servlet-class>org.hibernarm.service.util.Log4jInit</servlet-class>
+		<init-param>
+			<param-name>log4j</param-name>
+			<param-value>WEB-INF/classes/log4j.properties</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
 	<servlet>
 		<servlet-name>CXFServlet</servlet-name>
