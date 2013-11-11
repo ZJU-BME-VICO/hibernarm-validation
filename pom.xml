@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.hibernarm</groupId>
-	<artifactId>hibernarm-service</artifactId>
+	<artifactId>hibernarm-validation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Hibernarm Service</name>
+	<name>Hibernarm Validation</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
 			<properties>
 				<env>dev</env>
 				<tomcat.url>http://localhost:9090/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-service</database.url>
+				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-validation</database.url>
 				<database.username>sa</database.username>
 				<database.password>sa</database.password>
 			</properties>
@@ -31,17 +31,11 @@
 			</activation>
 		</profile>
 		<profile>
-			<id>production</id>
-			<properties>
-				<env>production</env>
-			</properties>
-		</profile>
-		<profile>
 			<id>test</id>
 			<properties>
 				<env>test</env>
 				<tomcat.url>http://172.17.0.88:9090/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://172.17.0.86:1433;DatabaseName=hibernarm-service</database.url>
+				<database.url>jdbc:sqlserver://172.17.0.86:1433;DatabaseName=hibernarm-validation</database.url>
 				<database.username>sa</database.username>
 				<database.password>Sql0808</database.password>
 			</properties>
@@ -81,10 +75,10 @@
 					<url>${tomcat.url}</url>
 					<username>admin</username>
 					<password>admin</password>
-					<path>/hibernarm-service</path>
+					<path>/hibernarm-validation</path>
 					<charset>${project.build.sourceEncoding}</charset>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
-					<port>9091</port>
+					<port>9093</port>
 				</configuration>
 			</plugin>
 		</plugins>
