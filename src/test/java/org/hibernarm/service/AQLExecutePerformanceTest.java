@@ -30,8 +30,6 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-
 		long start = System.currentTimeMillis();
 		List<String> dadls = new ArrayList<String>();
 		for (int i = 0; i < 1000; i++) {
@@ -68,7 +66,6 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		long start = System.currentTimeMillis();
 		
 		for (int i = 0; i < 1000; i++) {

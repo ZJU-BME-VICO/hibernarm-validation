@@ -26,6 +26,7 @@ import se.acode.openehr.parser.ADLParser;
 public class AQLExecuteTestBase {
 	protected Map<String, String> archetypes = new LinkedHashMap<String, String>();
 	protected Map<String, String> arms = new LinkedHashMap<String, String>();
+	protected AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 
 	public AQLExecuteTestBase() throws IOException {
 		archetypes
@@ -33,63 +34,63 @@ public class AQLExecuteTestBase {
 						readLines("../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.blood_pressure.v1",
-				readLines("../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm.xml"));
+				readLines("../document/knowledge/CKM/archetype/entry/observation/openEHR-EHR-OBSERVATION.blood_pressure.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.adl.v1",
 						readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.adl.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.adl.v1",
-				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.adl.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.adl.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.cdr.v1",
 						readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.cdr.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.cdr.v1",
-				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.cdr.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.gds.v1",
 						readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.gds.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.gds.v1",
-				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.gds.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.gds.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.mmse.v1",
 						readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.mmse.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.mmse.v1",
-				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.mmse.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1",
 						readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1.adl"));
 		arms.put(
 				"openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1",
-				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/ad/openEHR-EHR-OBSERVATION.other_cognitions_scale_exams.v1.arm"));
 
 		archetypes
 				.put("openEHR-EHR-COMPOSITION.visit.v3",
 						readLines("../document/knowledge/ZJU/archetype/openEHR-EHR-COMPOSITION.visit.v3.adl"));
 		arms.put(
 				"openEHR-EHR-COMPOSITION.visit.v3",
-				readLines("../document/knowledge/ZJU/archetype/openEHR-EHR-COMPOSITION.visit.v3.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/openEHR-EHR-COMPOSITION.visit.v3.arm"));
 
 		archetypes
 				.put("openEHR-DEMOGRAPHIC-PERSON.patient.v1",
 						readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v1.adl"));
 		arms.put(
 				"openEHR-DEMOGRAPHIC-PERSON.patient.v1",
-				readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v1.arm"));
 
 		archetypes
 				.put("openEHR-DEMOGRAPHIC-PERSON.patient.v2",
 						readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v2.adl"));
 		arms.put(
 				"openEHR-DEMOGRAPHIC-PERSON.patient.v2",
-				readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v2.arm.xml"));
+				readLines("../document/knowledge/ZJU/archetype/openEHR-DEMOGRAPHIC-PERSON.patient.v2.arm"));
 	}
 
 	protected String[] getDadlFiles() {
@@ -217,7 +218,6 @@ public class AQLExecuteTestBase {
 	}
 
 	protected void createTestBaseData() throws Exception {
-		AQLExecute aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		List<Map<HashMap<String, Object>, String>> list = getArchetypeValues();
@@ -244,8 +244,6 @@ public class AQLExecuteTestBase {
 	}
 
 	protected void cleanTestBaseData() {
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-
 		for (String str : archetypes.keySet()) {
 			String aql = String.format("delete from %s as o", str);
 			aqlImpl.delete(aql, null);
@@ -268,13 +266,15 @@ public class AQLExecuteTestBase {
 	}
 
 	protected void reconfigure() throws IOException {
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-
+		aqlImpl.stop();
+		
 		for (String str : archetypes.keySet()) {
 			aqlImpl.registerArchetype(str, archetypes.get(str), arms.get(str));
 		}
 
 		aqlImpl.reconfigure();
+		
+		aqlImpl.start();
 	}
 
 }

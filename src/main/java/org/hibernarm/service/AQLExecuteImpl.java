@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory;
+import org.hibernate.hql.spi.QueryTranslator;
+import org.hibernate.hql.spi.QueryTranslatorFactory;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.transform.Transformers;
@@ -182,7 +187,7 @@ public class AQLExecuteImpl implements AQLExecute {
 			@WebParam String archetypeId,
 			@WebParam Map<String, Object> parameters) throws Exception {
 
-		if (getServiceStatus()) {
+		if (!getServiceStatus()) {
 			return null;
 		}
 
@@ -240,7 +245,7 @@ public class AQLExecuteImpl implements AQLExecute {
 			throws UnsupportedEncodingException, ParseException,
 			DADLBindingException, RMObjectBuildingException {
 
-		if (getServiceStatus()) {
+		if (!getServiceStatus()) {
 			return;
 		}
 
@@ -308,7 +313,7 @@ public class AQLExecuteImpl implements AQLExecute {
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {
 
-		if (getServiceStatus()) {
+		if (!getServiceStatus()) {
 			return -1;
 		}
 
@@ -334,6 +339,30 @@ public class AQLExecuteImpl implements AQLExecute {
 				q.setParameter(paraName, parameters.get(paraName));
 			}
 		}
+
+	}
+
+	@Override
+	@WebMethod
+	@WebResult
+	public List<String> getSQL(@WebParam String aql) {
+
+		if (!getServiceStatus()) {
+			return null;
+		}
+		
+		if (aql == null || aql.trim().length() <= 0) {
+			return null;
+		}
+
+    	final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
+    	final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
+    	final QueryTranslator translator = translatorFactory.
+   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory);
+    	translator.compile(Collections.EMPTY_MAP, false);
+    	List<String> sqls = translator.collectSqlStrings();
+
+		return sqls;
 
 	}
 

@@ -165,4 +165,9 @@ public interface AQLExecute {
 //	@WebResult
 //	int update(@WebParam String aql, @WebParam Map<String, Object> parameters);
 
+	/**
+	 * @param aql
+	 * @return sql
+	 */
+	List<String> getSQL(String aql);
 }
