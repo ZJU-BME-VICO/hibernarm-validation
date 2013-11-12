@@ -35,8 +35,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query);
@@ -85,8 +83,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
-
 		{
 			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
 			List<String> results = aqlImpl.select(query);
@@ -131,6 +127,51 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	}
 
 	@Test
+	public void testGetSQL() throws Exception {
+		reconfigure();
+
+		cleanTestBaseData();
+		createTestBaseData();
+
+		{
+			String query = "from openEHR-EHR-COMPOSITION.visit.v3 as o ";
+			List<String> sqls = aqlImpl.getSQL(query);
+
+			assertTrue(sqls.size() > 0);
+			for (String sql : sqls) {
+				System.out.println(sql);				
+			}
+		}
+
+		{
+			String query = "select o "
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "where o#/details[at0001]/items[at0009]/value/value = 'lisi'";
+			List<String> sqls = aqlImpl.getSQL(query);
+
+			assertTrue(sqls.size() > 0);
+			for (String sql : sqls) {
+				System.out.println(sql);				
+			}
+		}
+
+		{
+			String query = "update openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o set "
+					+ "o#/details[at0001]/items[at0009]/value/value = 'lisi', "
+					+ "o#/details[at0001]/items[at0004]/value/value = '1994-08-11T19:20:30+08:00' "
+					+ "where o#/uid/value = 'patient1'";
+			List<String> sqls = aqlImpl.getSQL(query);
+
+			assertTrue(sqls.size() > 0);
+			for (String sql : sqls) {
+				System.out.println(sql);				
+			}
+		}
+
+		cleanTestBaseData();
+	}
+
+	@Test
 	public void testInsert() throws Exception {
 		reconfigure();
 
@@ -151,7 +192,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			dadls.add(binding.toDADLString(bp));
 		}
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		aqlImpl.insert(dadls);
 
 		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
@@ -167,7 +207,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -300,7 +339,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -341,8 +379,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 //
 //		cleanTestBaseData();
 //		createTestBaseData();
-//
-//		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 //
 //		{
 //			String query = "select "
@@ -422,7 +458,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -492,7 +527,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -534,7 +568,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -605,7 +638,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -676,7 +708,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -805,7 +836,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -856,7 +886,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
@@ -928,7 +957,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		cleanTestBaseData();
 		createTestBaseData();
 
-		AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
 		DADLBinding binding = new DADLBinding();
 
 		{
