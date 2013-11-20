@@ -47,19 +47,28 @@ public class AQLExecuteImpl implements AQLExecute {
 	private static Map<String, String> archetypes;
 	private static Map<String, String> arms;
 
-	private static boolean serviceStatus = true;
+	private static boolean serviceStatus = false;
 
 	public AQLExecuteImpl() {
 
-		if (archetypes == null) {
-			archetypes = new HashMap<String, String>();
-		}
+		try {
+			if (archetypes == null) {
+				archetypes = new HashMap<String, String>();
+			}
 
-		if (arms == null) {
-			arms = new HashMap<String, String>();
-		}
+			if (arms == null) {
+				arms = new HashMap<String, String>();
+			}
 
-		reconfigure();
+			stop();
+			
+			reconfigure();
+			
+			start();			
+		} catch (Exception e) {
+			logger.error("AQLExecuteImpl", e);
+			stop();
+		}
 
 	}
 
@@ -105,18 +114,18 @@ public class AQLExecuteImpl implements AQLExecute {
 		
 		logger.info("reconfigure");
 
-		if (getServiceStatus()) {
-			return -1;
-		}
-
-		if (sessionFactory != null) {
-			sessionFactory.close();
-		}
-
-		cfg = new Configuration();
-		cfg.configure();
-
 		try {
+			if (getServiceStatus()) {
+				return -1;
+			}
+
+			if (sessionFactory != null) {
+				sessionFactory.close();
+			}
+			
+			cfg = new Configuration();
+			cfg.configure();
+
 			for (String key : arms.keySet()) {
 				InputStream is = new ByteArrayInputStream(arms.get(key).getBytes("UTF-8"));
 				cfg.addInputStream(is);
@@ -126,15 +135,16 @@ public class AQLExecuteImpl implements AQLExecute {
 				InputStream is = new ByteArrayInputStream(archetypes.get(key).getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
+
+			ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+					.applySettings(cfg.getProperties()).buildServiceRegistry();
+			sessionFactory = cfg.buildSessionFactory(serviceRegistry);
+
+			return 0;
 		} catch (Exception e) {
+			logger.error("reconfigure", e);
 			return -2;
 		}
-
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-				.applySettings(cfg.getProperties()).buildServiceRegistry();
-		sessionFactory = cfg.buildSessionFactory(serviceRegistry);
-
-		return 0;
 
 	}
 
@@ -145,19 +155,24 @@ public class AQLExecuteImpl implements AQLExecute {
 			@WebParam String archetype, @WebParam String arm) {
 		
 		logger.info("registerArchetype");
-
-		if (getServiceStatus()) {
-			return -1;
-		}
 		
-		logger.info(archetypeId);
-		logger.info(archetype);
-		logger.info(arm);
+		try {
+			if (getServiceStatus()) {
+				return -1;
+			}
+			
+			logger.info(archetypeId);
+			logger.info(archetype);
+			logger.info(arm);
 
-		archetypes.put(archetypeId, archetype);
-		arms.put(archetypeId, arm);
+			archetypes.put(archetypeId, archetype);
+			arms.put(archetypeId, arm);
 
-		return 0;
+			return 0;			
+		} catch (Exception e) {
+			logger.error("registerArchetype", e);
+			return -2;
+		}
 
 	}
 
@@ -200,38 +215,43 @@ public class AQLExecuteImpl implements AQLExecute {
 		logger.info("select");
 		
 		logger.info(aql);
+		
+		try {
+			if (!getServiceStatus()) {
+				return null;
+			}
 
-		if (!getServiceStatus()) {
+			Session s = sessionFactory.openSession();
+			Transaction txn = s.beginTransaction();
+
+			Query q = s.createQuery(aql);
+			passParameters(q, parameters);
+			if (archetypeId != null && !archetypeId.isEmpty()) {
+				q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
+			}
+			@SuppressWarnings("rawtypes")
+			List results = q.list();
+
+			s.flush();
+			txn.commit();
+			s.close();
+
+			List<String> dadlResults = new ArrayList<String>();
+			for (Object arr : results) {
+				if (arr.getClass().isArray()) {
+					for (int i = 0; i < Array.getLength(arr); i++) {
+						generateReturnDADL(Array.get(arr, i), dadlResults);
+					}
+				} else {
+					generateReturnDADL(arr, dadlResults);
+				}
+			}
+
+			return dadlResults;			
+		} catch (Exception e) {
+			logger.error("select", e);
 			return null;
 		}
-
-		Session s = sessionFactory.openSession();
-		Transaction txn = s.beginTransaction();
-
-		Query q = s.createQuery(aql);
-		passParameters(q, parameters);
-		if (archetypeId != null && !archetypeId.isEmpty()) {
-			q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
-		}
-		@SuppressWarnings("rawtypes")
-		List results = q.list();
-
-		s.flush();
-		txn.commit();
-		s.close();
-
-		List<String> dadlResults = new ArrayList<String>();
-		for (Object arr : results) {
-			if (arr.getClass().isArray()) {
-				for (int i = 0; i < Array.getLength(arr); i++) {
-					generateReturnDADL(Array.get(arr, i), dadlResults);
-				}
-			} else {
-				generateReturnDADL(arr, dadlResults);
-			}
-		}
-
-		return dadlResults;
 
 	}
 
@@ -263,32 +283,36 @@ public class AQLExecuteImpl implements AQLExecute {
 		
 		logger.info("insert");
 
-		if (!getServiceStatus()) {
-			return;
+		try {
+			if (!getServiceStatus()) {
+				return;
+			}
+
+			List<Object> objects = new ArrayList<Object>();
+
+			for (String dadl : dadls) {			
+				logger.info(dadl);
+				InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
+				DADLParser parser = new DADLParser(is);
+				ContentObject contentObj = parser.parse();
+				DADLBinding binding = new DADLBinding();
+				Object bp = binding.bind(contentObj);
+				objects.add(bp);
+			}
+
+			Session s = sessionFactory.openSession();
+			Transaction txn = s.beginTransaction();
+
+			for (Object object : objects) {
+				s.save(object);
+			}
+
+			s.flush();
+			txn.commit();
+			s.close();			
+		} catch (Exception e) {
+			logger.error("insert", e);
 		}
-
-		List<Object> objects = new ArrayList<Object>();
-
-		for (String dadl : dadls) {			
-			logger.info(dadl);
-			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
-			DADLParser parser = new DADLParser(is);
-			ContentObject contentObj = parser.parse();
-			DADLBinding binding = new DADLBinding();
-			Object bp = binding.bind(contentObj);
-			objects.add(bp);
-		}
-
-		Session s = sessionFactory.openSession();
-		Transaction txn = s.beginTransaction();
-
-		for (Object object : objects) {
-			s.save(object);
-		}
-
-		s.flush();
-		txn.commit();
-		s.close();
 
 	}
 
@@ -336,24 +360,29 @@ public class AQLExecuteImpl implements AQLExecute {
 		
 		logger.info(aql);
 
-		if (!getServiceStatus()) {
-			return -1;
+		try {
+			if (!getServiceStatus()) {
+				return -1;
+			}
+
+			Session s = sessionFactory.openSession();
+			Transaction txn = s.beginTransaction();
+
+			Query q = s.createQuery(aql);
+			passParameters(q, parameters);
+			int ret = q.executeUpdate();
+
+			s.flush();
+			txn.commit();
+			s.close();
+			
+			logger.info(ret);
+
+			return ret;			
+		} catch (Exception e) {
+			logger.error("executeUpdate", e);
+			return -2;
 		}
-
-		Session s = sessionFactory.openSession();
-		Transaction txn = s.beginTransaction();
-
-		Query q = s.createQuery(aql);
-		passParameters(q, parameters);
-		int ret = q.executeUpdate();
-
-		s.flush();
-		txn.commit();
-		s.close();
-		
-		logger.info(ret);
-
-		return ret;
 
 	}
 
@@ -373,23 +402,28 @@ public class AQLExecuteImpl implements AQLExecute {
 	public List<String> getSQL(@WebParam String aql) {
 		
 		logger.info("getSQL");
-
-		if (!getServiceStatus()) {
-			return null;
-		}
 		
-		if (aql == null || aql.trim().length() <= 0) {
+		try {
+			if (!getServiceStatus()) {
+				return null;
+			}
+			
+			if (aql == null || aql.trim().length() <= 0) {
+				return null;
+			}
+
+	    	final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
+	    	final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
+	    	final QueryTranslator translator = translatorFactory.
+	   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory);
+	    	translator.compile(Collections.EMPTY_MAP, false);
+	    	List<String> sqls = translator.collectSqlStrings();
+
+			return sqls;			
+		} catch (Exception e) {
+			logger.error("getSQL", e);
 			return null;
 		}
-
-    	final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
-    	final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
-    	final QueryTranslator translator = translatorFactory.
-   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory);
-    	translator.compile(Collections.EMPTY_MAP, false);
-    	List<String> sqls = translator.collectSqlStrings();
-
-		return sqls;
 
 	}
 
