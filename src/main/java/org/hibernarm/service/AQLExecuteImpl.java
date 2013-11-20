@@ -199,6 +199,7 @@ public class AQLExecuteImpl implements AQLExecute {
 		if (archetypeId != null && !archetypeId.isEmpty()) {
 			q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
 		}
+		@SuppressWarnings("rawtypes")
 		List results = q.list();
 
 		s.flush();

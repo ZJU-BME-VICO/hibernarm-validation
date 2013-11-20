@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hibernarm.service.AQLExecuteImpl;
 import org.junit.Test;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;
@@ -25,7 +24,6 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 
 	public AQLExecuteTest() throws IOException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Test
