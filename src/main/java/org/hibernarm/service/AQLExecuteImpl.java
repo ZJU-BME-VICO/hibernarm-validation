@@ -39,6 +39,8 @@ import org.openehr.rm.common.archetyped.Locatable;
 @WebService(endpointInterface = "org.hibernarm.service.AQLExecute")
 public class AQLExecuteImpl implements AQLExecute {
 
+	private static Logger logger = Logger.getLogger(AQLExecuteImpl.class.getName());
+
 	private static Configuration cfg;
 	private static SessionFactory sessionFactory;
 
@@ -46,8 +48,6 @@ public class AQLExecuteImpl implements AQLExecute {
 	private static Map<String, String> arms;
 
 	private static boolean serviceStatus = true;
-
-	private static Logger logger = Logger.getLogger(AQLExecuteImpl.class.getName());
 
 	public AQLExecuteImpl() {
 
@@ -67,6 +67,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public int start() {
+		
+		logger.info("start");
 
 		serviceStatus = true;
 		return 0;
@@ -77,6 +79,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public int stop() {
+		
+		logger.info("stop");
 
 		serviceStatus = false;
 		return 0;
@@ -87,6 +91,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public boolean getServiceStatus() {
+		
+		logger.info("getServiceStatus: " + serviceStatus);
 
 		return serviceStatus;
 
@@ -96,6 +102,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public int reconfigure() {
+		
+		logger.info("reconfigure");
 
 		if (getServiceStatus()) {
 			return -1;
@@ -135,14 +143,16 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebResult
 	public int registerArchetype(@WebParam String archetypeId,
 			@WebParam String archetype, @WebParam String arm) {
+		
+		logger.info("registerArchetype");
 
 		if (getServiceStatus()) {
 			return -1;
 		}
 		
-		logger.info("\n" + archetypeId);
-		logger.info("\n" + archetype);
-		logger.info("\n" + arm);
+		logger.info(archetypeId);
+		logger.info(archetype);
+		logger.info(arm);
 
 		archetypes.put(archetypeId, archetype);
 		arms.put(archetypeId, arm);
@@ -186,6 +196,10 @@ public class AQLExecuteImpl implements AQLExecute {
 	public List<String> select(@WebParam String aql,
 			@WebParam String archetypeId,
 			@WebParam Map<String, Object> parameters) throws Exception {
+		
+		logger.info("select");
+		
+		logger.info(aql);
 
 		if (!getServiceStatus()) {
 			return null;
@@ -229,6 +243,7 @@ public class AQLExecuteImpl implements AQLExecute {
 			Locatable loc = (Locatable) obj;
 			String str = binding.toDADLString(loc);
 			if (!dadlResults.contains(str)) {
+				logger.info(str);
 				dadlResults.add(str);
 
 				for (Object associatedObject : loc.getAssociatedObjects().values()) {
@@ -245,6 +260,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	public void insert(@WebParam List<String> dadls)
 			throws UnsupportedEncodingException, ParseException,
 			DADLBindingException, RMObjectBuildingException {
+		
+		logger.info("insert");
 
 		if (!getServiceStatus()) {
 			return;
@@ -252,7 +269,8 @@ public class AQLExecuteImpl implements AQLExecute {
 
 		List<Object> objects = new ArrayList<Object>();
 
-		for (String dadl : dadls) {
+		for (String dadl : dadls) {			
+			logger.info(dadl);
 			InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
 			DADLParser parser = new DADLParser(is);
 			ContentObject contentObj = parser.parse();
@@ -313,6 +331,10 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {
+		
+		logger.info("executeUpdate");
+		
+		logger.info(aql);
 
 		if (!getServiceStatus()) {
 			return -1;
@@ -328,6 +350,8 @@ public class AQLExecuteImpl implements AQLExecute {
 		s.flush();
 		txn.commit();
 		s.close();
+		
+		logger.info(ret);
 
 		return ret;
 
@@ -347,6 +371,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	@WebMethod
 	@WebResult
 	public List<String> getSQL(@WebParam String aql) {
+		
+		logger.info("getSQL");
 
 		if (!getServiceStatus()) {
 			return null;
