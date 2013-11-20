@@ -10,6 +10,8 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Log4jInit extends HttpServlet {
 	
+	private static final long serialVersionUID = 9121426914301154984L;
+
 	public Log4jInit() {
 
 	}

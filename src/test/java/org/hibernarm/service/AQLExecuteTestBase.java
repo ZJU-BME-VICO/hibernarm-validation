@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernarm.service.AQLExecute;
 import org.hibernarm.service.AQLExecuteImpl;
 import org.hibernate.internal.util.ReflectHelper;
 import org.openehr.am.archetype.Archetype;
@@ -262,6 +261,8 @@ public class AQLExecuteTestBase {
 			result.append("\n");
 			line = reader.readLine();
 		}
+		reader.close();
+		
 		return result.toString();
 	}
 

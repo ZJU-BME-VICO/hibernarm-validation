@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernarm.service.AQLExecuteImpl;
 import org.junit.Test;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;
@@ -20,7 +19,6 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 
 	public AQLExecutePerformanceTest() throws IOException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Test
