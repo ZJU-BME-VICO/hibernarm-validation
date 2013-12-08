@@ -416,7 +416,7 @@ public class AQLExecuteImpl implements AQLExecute {
 	    	final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
 	    	final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
 	    	final QueryTranslator translator = translatorFactory.
-	   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory);
+	   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory, null);
 	    	translator.compile(Collections.EMPTY_MAP, false);
 	    	List<String> sqls = translator.collectSqlStrings();
 
