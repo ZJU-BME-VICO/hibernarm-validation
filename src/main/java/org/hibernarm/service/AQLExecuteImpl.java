@@ -20,13 +20,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory;
 import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.hql.spi.QueryTranslatorFactory;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.transform.Transformers;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;
@@ -135,9 +135,10 @@ public class AQLExecuteImpl implements AQLExecute {
 				InputStream is = new ByteArrayInputStream(archetypes.get(key).getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
+			
+			StandardServiceRegistry serviceRegistry = 
+					new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
 
-			ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-					.applySettings(cfg.getProperties()).buildServiceRegistry();
 			sessionFactory = cfg.buildSessionFactory(serviceRegistry);
 
 			return 0;
