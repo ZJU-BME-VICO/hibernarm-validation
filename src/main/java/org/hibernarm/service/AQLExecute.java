@@ -46,10 +46,7 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 	@WebMethod
-	int registerArchetype(
-			String archetypeId,
-			String archetype,
-			String arm);
+	int registerArchetype(String archetypeId, String archetype, String arm);
 
 	/**
 	 * @param aql
@@ -68,37 +65,7 @@ public interface AQLExecute {
 	 * @throws Exception
 	 */
 //	@WebMethod
-//	List<String> select(
-//			String aql, 
-//			String archetypeId);
-
-	/**
-	 * @param aql
-	 * @param listParameterName
-	 * @param listParameterValue
-	 * @return
-	 * -1 service running
-	 * @throws Exception
-	 */
-//	@WebMethod
-//	List<String> select(
-//			@WebParam(name = "aql") String aql, 
-//			@WebParam(name = "parameters") Map<String, Object> parameters);
-
-	/**
-	 * @param aql
-	 * @param archetypeId
-	 * @param listParameterName
-	 * @param listParameterValue
-	 * @return
-	 * -1 service running
-	 * @throws Exception
-	 */
-//	@WebMethod
-//	List<String> select(
-//			@WebParam(name = "aql") String aql, 
-//			@WebParam(name = "archetypeId") String archetypeId,
-//			@WebParam(name = "parameters") Map<String, Object> parameters);
+//	List<String> select(String aql, String archetypeId);
 
 	/**
 	 * @param dadls
@@ -119,15 +86,6 @@ public interface AQLExecute {
 	 */
 	@WebMethod
 	int delete(String aql);
-	
-	/**
-	 * @param aql
-	 * @param parameters
-	 * @return
-	 * -1 service running
-	 */
-//	@WebMethod
-//	int delete(@WebParam(name = "aql") String aql, @WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
 	 * @param aql
@@ -136,15 +94,6 @@ public interface AQLExecute {
 	 */
 	@WebMethod
 	int update(String aql);
-
-	/**
-	 * @param aql
-	 * @param parameters
-	 * @return
-	 * -1 service running
-	 */
-//	@WebMethod
-//	int update(@WebParam(name = "aql") String aql, @WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
 	 * @param aql
