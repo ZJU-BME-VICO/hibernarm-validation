@@ -2,7 +2,6 @@ package org.hibernarm.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.SOAPBinding;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -30,16 +28,15 @@ import org.hibernate.hql.spi.QueryTranslatorFactory;
 import org.hibernate.transform.Transformers;
 import org.openehr.am.parser.ContentObject;
 import org.openehr.am.parser.DADLParser;
-import org.openehr.am.parser.ParseException;
-import org.openehr.build.RMObjectBuildingException;
 import org.openehr.rm.binding.DADLBinding;
-import org.openehr.rm.binding.DADLBindingException;
 import org.openehr.rm.common.archetyped.Locatable;
 
 @WebService(endpointInterface = "org.hibernarm.service.AQLExecute")
+@BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 public class AQLExecuteImpl implements AQLExecute {
 
-	private static Logger logger = Logger.getLogger(AQLExecuteImpl.class.getName());
+	private static Logger logger = Logger.getLogger(AQLExecuteImpl.class
+			.getName());
 
 	private static Configuration cfg;
 	private static SessionFactory sessionFactory;
@@ -61,10 +58,10 @@ public class AQLExecuteImpl implements AQLExecute {
 			}
 
 			stop();
-			
+
 			reconfigure();
-			
-			start();			
+
+			start();
 		} catch (Exception e) {
 			logger.error("AQLExecuteImpl", e);
 			stop();
@@ -73,10 +70,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
 	public int start() {
-		
+
 		logger.info("start");
 
 		serviceStatus = true;
@@ -85,10 +80,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
 	public int stop() {
-		
+
 		logger.info("stop");
 
 		serviceStatus = false;
@@ -97,10 +90,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
 	public boolean getServiceStatus() {
-		
+
 		logger.info("getServiceStatus: " + serviceStatus);
 
 		return serviceStatus;
@@ -108,10 +99,8 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
 	public int reconfigure() {
-		
+
 		logger.info("reconfigure");
 
 		try {
@@ -122,22 +111,24 @@ public class AQLExecuteImpl implements AQLExecute {
 			if (sessionFactory != null) {
 				sessionFactory.close();
 			}
-			
+
 			cfg = new Configuration();
 			cfg.configure();
 
 			for (String key : arms.keySet()) {
-				InputStream is = new ByteArrayInputStream(arms.get(key).getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(arms.get(key)
+						.getBytes("UTF-8"));
 				cfg.addInputStream(is);
 			}
 
 			for (String key : archetypes.keySet()) {
-				InputStream is = new ByteArrayInputStream(archetypes.get(key).getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(archetypes.get(key)
+						.getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
-			
-			StandardServiceRegistry serviceRegistry = 
-					new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
+
+			StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+					.applySettings(cfg.getProperties()).build();
 
 			sessionFactory = cfg.buildSessionFactory(serviceRegistry);
 
@@ -150,18 +141,18 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public int registerArchetype(@WebParam String archetypeId,
-			@WebParam String archetype, @WebParam String arm) {
-		
+	public int registerArchetype(
+			String archetypeId,
+			String archetype,
+			String arm) {
+
 		logger.info("registerArchetype");
-		
+
 		try {
 			if (getServiceStatus()) {
 				return -1;
 			}
-			
+
 			logger.info(archetypeId);
 			logger.info(archetype);
 			logger.info(arm);
@@ -169,7 +160,7 @@ public class AQLExecuteImpl implements AQLExecute {
 			archetypes.put(archetypeId, archetype);
 			arms.put(archetypeId, arm);
 
-			return 0;			
+			return 0;
 		} catch (Exception e) {
 			logger.error("registerArchetype", e);
 			return -2;
@@ -178,45 +169,36 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public List<String> select(@WebParam String aql) throws Exception {
+	public List<String> select(String aql) {
 
 		return select(aql, null, null);
 
 	}
 
 	// @Override
-	// @WebMethod
-	@WebResult
-	public List<String> select(@WebParam String aql,
-			@WebParam String archetypeId) throws Exception {
+	public List<String> select(String aql, String archetypeId) {
 
 		return select(aql, archetypeId, null);
 
 	}
 
 	// @Override
-	// @WebMethod
-	@WebResult
-	public List<String> select(@WebParam String aql,
-			@WebParam Map<String, Object> parameters) throws Exception {
+	public List<String> select(String aql, Map<String, Object> parameters) {
 
 		return select(aql, null, parameters);
 
 	}
 
 	// @Override
-	// @WebMethod
-	@WebResult
-	public List<String> select(@WebParam String aql,
-			@WebParam String archetypeId,
-			@WebParam Map<String, Object> parameters) throws Exception {
-		
+	public List<String> select(
+			String aql,
+			String archetypeId,
+			Map<String, Object> parameters) {
+
 		logger.info("select");
-		
+
 		logger.info(aql);
-		
+
 		try {
 			if (!getServiceStatus()) {
 				return null;
@@ -228,7 +210,8 @@ public class AQLExecuteImpl implements AQLExecute {
 			Query q = s.createQuery(aql);
 			passParameters(q, parameters);
 			if (archetypeId != null && !archetypeId.isEmpty()) {
-				q.setResultTransformer(Transformers.aliasToArchetype(archetypeId));
+				q.setResultTransformer(Transformers
+						.aliasToArchetype(archetypeId));
 			}
 			@SuppressWarnings("rawtypes")
 			List results = q.list();
@@ -248,7 +231,7 @@ public class AQLExecuteImpl implements AQLExecute {
 				}
 			}
 
-			return dadlResults;			
+			return dadlResults;
 		} catch (Exception e) {
 			logger.error("select", e);
 			return null;
@@ -267,7 +250,8 @@ public class AQLExecuteImpl implements AQLExecute {
 				logger.info(str);
 				dadlResults.add(str);
 
-				for (Object associatedObject : loc.getAssociatedObjects().values()) {
+				for (Object associatedObject : loc.getAssociatedObjects()
+						.values()) {
 					generateReturnDADL(associatedObject, dadlResults);
 				}
 			}
@@ -276,24 +260,21 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public void insert(@WebParam List<String> dadls)
-			throws UnsupportedEncodingException, ParseException,
-			DADLBindingException, RMObjectBuildingException {
-		
+	public int insert(String[] dadls) {
+
 		logger.info("insert");
 
 		try {
 			if (!getServiceStatus()) {
-				return;
+				return -1;
 			}
 
 			List<Object> objects = new ArrayList<Object>();
 
-			for (String dadl : dadls) {			
+			for (String dadl : dadls) {
 				logger.info(dadl);
-				InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(
+						dadl.getBytes("UTF-8"));
 				DADLParser parser = new DADLParser(is);
 				ContentObject contentObj = parser.parse();
 				DADLBinding binding = new DADLBinding();
@@ -310,55 +291,48 @@ public class AQLExecuteImpl implements AQLExecute {
 
 			s.flush();
 			txn.commit();
-			s.close();			
+			s.close();
 		} catch (Exception e) {
 			logger.error("insert", e);
+			return -2;
 		}
+		
+		return 0;
 
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public int delete(@WebParam String aql) {
+	public int delete(String aql) {
 
 		return delete(aql, null);
 
 	}
 
 	// @Override
-	// @WebMethod
-	@WebResult
-	public int delete(@WebParam String aql,
-			@WebParam Map<String, Object> parameters) {
+	public int delete(String aql, Map<String, Object> parameters) {
 
 		return executeUpdate(aql, parameters);
 
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public int update(@WebParam String aql) {
+	public int update(String aql) {
 
 		return update(aql, null);
 
 	}
 
 	// @Override
-	// @WebMethod
-	@WebResult
-	public int update(@WebParam String aql,
-			@WebParam Map<String, Object> parameters) {
+	public int update(String aql, Map<String, Object> parameters) {
 
 		return executeUpdate(aql, parameters);
 
 	}
 
 	protected int executeUpdate(String aql, Map<String, Object> parameters) {
-		
+
 		logger.info("executeUpdate");
-		
+
 		logger.info(aql);
 
 		try {
@@ -376,10 +350,10 @@ public class AQLExecuteImpl implements AQLExecute {
 			s.flush();
 			txn.commit();
 			s.close();
-			
+
 			logger.info(ret);
 
-			return ret;			
+			return ret;
 		} catch (Exception e) {
 			logger.error("executeUpdate", e);
 			return -2;
@@ -398,29 +372,28 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	@WebMethod
-	@WebResult
-	public List<String> getSQL(@WebParam String aql) {
-		
+	public List<String> getSQL(String aql) {
+
 		logger.info("getSQL");
-		
+
 		try {
 			if (!getServiceStatus()) {
 				return null;
 			}
-			
+
 			if (aql == null || aql.trim().length() <= 0) {
 				return null;
 			}
 
-	    	final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
-	    	final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
-	    	final QueryTranslator translator = translatorFactory.
-	   			createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory, null);
-	    	translator.compile(Collections.EMPTY_MAP, false);
-	    	List<String> sqls = translator.collectSqlStrings();
+			final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
+			final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
+			final QueryTranslator translator = translatorFactory
+					.createQueryTranslator(aql, aql, Collections.EMPTY_MAP,
+							factory, null);
+			translator.compile(Collections.EMPTY_MAP, false);
+			List<String> sqls = translator.collectSqlStrings();
 
-			return sqls;			
+			return sqls;
 		} catch (Exception e) {
 			logger.error("getSQL", e);
 			return null;
