@@ -190,7 +190,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			dadls.add(binding.toDADLString(bp));
 		}
 
-		aqlImpl.insert(dadls);
+		aqlImpl.insert((String[]) dadls.toArray());
 
 		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
 		assertEquals(aqlImpl.select(query).size(), 2);

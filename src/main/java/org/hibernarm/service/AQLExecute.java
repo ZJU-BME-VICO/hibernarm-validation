@@ -1,16 +1,9 @@
 package org.hibernarm.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-
-import org.openehr.am.parser.ParseException;
-import org.openehr.build.RMObjectBuildingException;
-import org.openehr.rm.binding.DADLBindingException;
 
 @WebService
 public interface AQLExecute {
@@ -20,7 +13,6 @@ public interface AQLExecute {
 	 * 0 success
 	 */
 	@WebMethod
-	@WebResult
 	int start();
 
 	/**
@@ -28,14 +20,12 @@ public interface AQLExecute {
 	 * 0 success
 	 */
 	@WebMethod
-	@WebResult
 	int stop();
 
 	/**
 	 * @return
 	 */
 	@WebMethod
-	@WebResult
 	boolean getServiceStatus();
 
 	/**
@@ -45,7 +35,6 @@ public interface AQLExecute {
 	 * -2 internal error
 	 */
 	@WebMethod
-	@WebResult
 	int reconfigure();
 
 	/**
@@ -57,11 +46,10 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 	@WebMethod
-	@WebResult
 	int registerArchetype(
-			@WebParam String archetypeId,
-			@WebParam String archetype,
-			@WebParam String arm);
+			String archetypeId,
+			String archetype,
+			String arm);
 
 	/**
 	 * @param aql
@@ -71,8 +59,7 @@ public interface AQLExecute {
 	 * @throws Exception
 	 */
 	@WebMethod
-	@WebResult
-	List<String> select(@WebParam String aql) throws Exception;
+	List<String> select(String aql);
 
 	/**
 	 * @param aql
@@ -81,8 +68,9 @@ public interface AQLExecute {
 	 * @throws Exception
 	 */
 //	@WebMethod
-//	@WebResult
-//	List<String> select(@WebParam String aql, @WebParam String archetypeId) throws Exception;
+//	List<String> select(
+//			String aql, 
+//			String archetypeId);
 
 	/**
 	 * @param aql
@@ -93,9 +81,9 @@ public interface AQLExecute {
 	 * @throws Exception
 	 */
 //	@WebMethod
-//	@WebResult
-//	List<String> select(@WebParam String aql, 
-//			@WebParam Map<String, Object> parameters) throws Exception;
+//	List<String> select(
+//			@WebParam(name = "aql") String aql, 
+//			@WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
 	 * @param aql
@@ -107,13 +95,13 @@ public interface AQLExecute {
 	 * @throws Exception
 	 */
 //	@WebMethod
-//	@WebResult
-//	List<String> select(@WebParam String aql, @WebParam String archetypeId,
-//			@WebParam Map<String, Object> parameters) throws Exception;
+//	List<String> select(
+//			@WebParam(name = "aql") String aql, 
+//			@WebParam(name = "archetypeId") String archetypeId,
+//			@WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
-	 * @param aql
-	 * @param parameters
+	 * @param dadls
 	 * @return
 	 * -1 service running
 	 * @throws UnsupportedEncodingException
@@ -122,10 +110,7 @@ public interface AQLExecute {
 	 * @throws DADLBindingException
 	 */
 	@WebMethod
-	@WebResult
-	void insert(@WebParam List<String> dadls)
-			throws UnsupportedEncodingException, ParseException,
-			DADLBindingException, RMObjectBuildingException;
+	int insert(String[] dadls);
 
 	/**
 	 * @param aql
@@ -133,8 +118,7 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 	@WebMethod
-	@WebResult
-	int delete(@WebParam String aql);
+	int delete(String aql);
 	
 	/**
 	 * @param aql
@@ -143,8 +127,7 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 //	@WebMethod
-//	@WebResult
-//	int delete(@WebParam String aql, @WebParam Map<String, Object> parameters);
+//	int delete(@WebParam(name = "aql") String aql, @WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
 	 * @param aql
@@ -152,8 +135,7 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 	@WebMethod
-	@WebResult
-	int update(@WebParam String aql);
+	int update(String aql);
 
 	/**
 	 * @param aql
@@ -162,12 +144,12 @@ public interface AQLExecute {
 	 * -1 service running
 	 */
 //	@WebMethod
-//	@WebResult
-//	int update(@WebParam String aql, @WebParam Map<String, Object> parameters);
+//	int update(@WebParam(name = "aql") String aql, @WebParam(name = "parameters") Map<String, Object> parameters);
 
 	/**
 	 * @param aql
 	 * @return sql
 	 */
+	@WebMethod
 	List<String> getSQL(String aql);
 }

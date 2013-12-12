@@ -238,7 +238,7 @@ public class AQLExecuteTestBase {
 				}
 			}
 
-			aqlImpl.insert(dadls);
+			aqlImpl.insert((String[]) dadls.toArray());
 		}
 	}
 

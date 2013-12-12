@@ -49,7 +49,7 @@ public class AQLExecutePerformanceTest extends AQLExecuteTestBase {
 			}			
 		}
 
-		aqlImpl.insert(dadls);
+		aqlImpl.insert((String[]) dadls.toArray());
 
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
