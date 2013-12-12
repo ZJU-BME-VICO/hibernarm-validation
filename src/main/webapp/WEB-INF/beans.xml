@@ -19,4 +19,11 @@
 		</jaxws:features>
 	</jaxws:endpoint>
 
+	<jaxws:endpoint id="AQLExecuteParameterized"
+		implementor="org.hibernarm.service.AQLExecuteParameterizedImpl" address="/AQLExecuteParameterized">
+		<jaxws:features>
+			<wsa:addressing xmlns:wsa="http://cxf.apache.org/ws/addressing" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
 </beans>

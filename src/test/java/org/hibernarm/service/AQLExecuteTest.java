@@ -94,7 +94,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "where o#/uid/value = :name";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("name", "visit2");
-			int ret = aqlImpl.delete(query, parameters);
+			int ret = aqlParameterizedImpl.delete(query, parameters);
 
 			assertEquals(ret, 1);
 		}
@@ -190,7 +190,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			dadls.add(binding.toDADLString(bp));
 		}
 
-		aqlImpl.insert((String[]) dadls.toArray());
+		aqlImpl.insert(dadls.toArray(new String[]{}));
 
 		String query = "from openEHR-EHR-OBSERVATION.blood_pressure.v1 as o";
 		assertEquals(aqlImpl.select(query).size(), 2);
@@ -842,7 +842,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "where o#/details[at0001]/items[at0009]/value/value = :name";
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("name", "lisi");
-			List<String> results = aqlImpl.select(query, null, parameters);
+			List<String> results = aqlParameterizedImpl.select(query, parameters);
 
 			assertEquals(results.size(), 1);
 
@@ -869,7 +869,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("VisitId", "visit1");
 			parameters.put("PatientId", "patient1");
-			List<String> results = aqlImpl.select(query, null, parameters);
+			List<String> results = aqlParameterizedImpl.select(query, parameters);
 
 			assertEquals(results.size(), 1);
 		}
@@ -916,7 +916,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 					+ "o#/details[at0001]/items[at0004]/value/value = '1994-08-11T19:20:30+08:00' "
 					+ "where o#/uid/value = 'patient1'";
 
-			int ret = aqlImpl.update(query, null);
+			int ret = aqlImpl.update(query);
 
 			assertEquals(ret, 1);
 		}
@@ -990,7 +990,7 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 			parameters.put("name", "lisi");
 			parameters.put("birthday", "1994-08-11T19:20:30+08:00");
 			parameters.put("pid", "patient1");
-			int ret = aqlImpl.update(query, parameters);
+			int ret = aqlParameterizedImpl.update(query, parameters);
 
 			assertEquals(ret, 1);
 		}

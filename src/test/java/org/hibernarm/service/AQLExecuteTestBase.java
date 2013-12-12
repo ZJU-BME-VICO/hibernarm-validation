@@ -26,6 +26,7 @@ public class AQLExecuteTestBase {
 	protected Map<String, String> archetypes = new LinkedHashMap<String, String>();
 	protected Map<String, String> arms = new LinkedHashMap<String, String>();
 	protected AQLExecuteImpl aqlImpl = new AQLExecuteImpl();
+	protected AQLExecuteParameterizedImpl aqlParameterizedImpl = new AQLExecuteParameterizedImpl();
 
 	public AQLExecuteTestBase() throws IOException {
 		archetypes
@@ -238,14 +239,14 @@ public class AQLExecuteTestBase {
 				}
 			}
 
-			aqlImpl.insert((String[]) dadls.toArray());
+			aqlImpl.insert(dadls.toArray(new String[]{}));
 		}
 	}
 
 	protected void cleanTestBaseData() {
 		for (String str : archetypes.keySet()) {
 			String aql = String.format("delete from %s as o", str);
-			aqlImpl.delete(aql, null);
+			aqlParameterizedImpl.delete(aql, null);
 		}
 	}
 

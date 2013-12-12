@@ -48,10 +48,10 @@
 			<id>test</id>
 			<properties>
 				<env>test</env>
-				<tomcat.url>http://172.17.0.88:${tomcat.port}/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://172.17.0.86:1433;DatabaseName=hibernarm-validation</database.url>
+				<tomcat.url>http://wl-pc:${tomcat.port}/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://wl-pc:1433;DatabaseName=hibernarm-validation</database.url>
 				<database.username>sa</database.username>
-				<database.password>Sql0808</database.password>
+				<database.password>sa</database.password>
 			</properties>
 		</profile>
 	</profiles>
