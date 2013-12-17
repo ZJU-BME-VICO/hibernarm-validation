@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -167,6 +169,15 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 		}
 
 		cleanTestBaseData();
+	}
+
+	@Test
+	public void testGetArchetypeIds() throws Exception {
+		reconfigure();
+
+		Set<String> archetypeIds = aqlImpl.getArchetypeIds();
+		assertTrue(archetypeIds.containsAll(archetypes.keySet()));
+		assertTrue(archetypes.keySet().containsAll(archetypeIds));
 	}
 
 	@Test

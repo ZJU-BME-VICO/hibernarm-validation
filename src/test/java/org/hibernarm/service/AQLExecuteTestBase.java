@@ -269,12 +269,8 @@ public class AQLExecuteTestBase {
 
 	protected void reconfigure() throws IOException {
 		aqlImpl.stop();
-		
-		for (String str : archetypes.keySet()) {
-			aqlImpl.registerArchetype(str, archetypes.get(str), arms.get(str));
-		}
 
-		aqlImpl.reconfigure();
+		aqlImpl.reconfigure(archetypes.values(), arms.values());
 		
 		aqlImpl.start();
 	}

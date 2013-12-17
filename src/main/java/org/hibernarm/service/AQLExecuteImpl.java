@@ -1,6 +1,9 @@
 package org.hibernarm.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
@@ -34,16 +37,9 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
-	public int reconfigure() {
+	public int reconfigure(Collection<String> archetypes, Collection<String> arms) {
 
-		return AQLExecuteSingleton.INSTANCE.reconfigure();
-
-	}
-
-	@Override
-	public int registerArchetype(String archetypeId, String archetype, String arm) {
-
-		return AQLExecuteSingleton.INSTANCE.registerArchetype(archetypeId, archetype, arm);
+		return AQLExecuteSingleton.INSTANCE.reconfigure(archetypes, arms);
 
 	}
 
@@ -87,6 +83,13 @@ public class AQLExecuteImpl implements AQLExecute {
 
 		return AQLExecuteSingleton.INSTANCE.getSQL(aql);
 
+	}
+
+	@Override
+	public Set<String> getArchetypeIds() {
+
+		return AQLExecuteSingleton.INSTANCE.getArchetypeIds();
+		
 	}
 
 }
