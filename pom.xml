@@ -8,24 +8,11 @@
 	<packaging>war</packaging>
 	<name>Hibernarm Service</name>
 
-	<repositories>
-		<repository>
-			<id>jboss-nexus</id>
-			<name>jboss-nexus</name>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-		<repository>
-			<id>jboss-snapshots</id>
-			<name>jboss-snapshots</name>
-			<url>http://snapshots.jboss.org/maven2/</url>
-		</repository>
-	</repositories>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.7.4</cxf.version>
 		<springframework.version>3.2.2.RELEASE</springframework.version>
-		<hibernarm.version>4.3.0</hibernarm.version>
+		<hibernarm.version>4.3.0.CR2</hibernarm.version>
 		<aspectj.version>1.7.2</aspectj.version>
 		<tomcat.port>9091</tomcat.port>
 	</properties>
