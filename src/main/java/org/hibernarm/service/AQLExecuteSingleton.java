@@ -4,10 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -37,25 +38,9 @@ public enum AQLExecuteSingleton {
 	private Configuration cfg;
 	private SessionFactory sessionFactory;
 
-	private Map<String, String> archetypes;
-	private Map<String, String> arms;
-
 	private boolean serviceStatus = false;
 
 	private AQLExecuteSingleton() {
-
-		try {
-			if (archetypes == null) {
-				archetypes = new HashMap<String, String>();
-			}
-
-			if (arms == null) {
-				arms = new HashMap<String, String>();
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		}
-
 	}
 
 	public int start() {
@@ -84,7 +69,7 @@ public enum AQLExecuteSingleton {
 
 	}
 
-	public int reconfigure() {
+	public int reconfigure(Collection<String> archetypes, Collection<String> arms) {
 
 		logger.info("reconfigure");
 
@@ -100,15 +85,13 @@ public enum AQLExecuteSingleton {
 			cfg = new Configuration();
 			cfg.configure();
 
-			for (String key : arms.keySet()) {
-				InputStream is = new ByteArrayInputStream(arms.get(key)
-						.getBytes("UTF-8"));
+			for (String key : arms) {
+				InputStream is = new ByteArrayInputStream(key.getBytes("UTF-8"));
 				cfg.addInputStream(is);
 			}
 
-			for (String key : archetypes.keySet()) {
-				InputStream is = new ByteArrayInputStream(archetypes.get(key)
-						.getBytes("UTF-8"));
+			for (String key : archetypes) {
+				InputStream is = new ByteArrayInputStream(key.getBytes("UTF-8"));
 				cfg.addArchetype(is);
 			}
 
@@ -116,31 +99,6 @@ public enum AQLExecuteSingleton {
 					.applySettings(cfg.getProperties()).build();
 
 			sessionFactory = cfg.buildSessionFactory(serviceRegistry);
-
-			return 0;
-		} catch (Exception e) {
-			logger.error(e);
-			return -2;
-		}
-
-	}
-
-	public int registerArchetype(String archetypeId, String archetype,
-			String arm) {
-
-		logger.info("registerArchetype");
-
-		try {
-			if (getServiceStatus()) {
-				return -1;
-			}
-
-			logger.info(archetypeId);
-			logger.info(archetype);
-			logger.info(arm);
-
-			archetypes.put(archetypeId, archetype);
-			arms.put(archetypeId, arm);
 
 			return 0;
 		} catch (Exception e) {
@@ -369,6 +327,24 @@ public enum AQLExecuteSingleton {
 			return null;
 		}
 
+	}
+
+	public Set<String> getArchetypeIds() {
+
+		logger.info("getArchetypes");
+		
+		try {
+			if (!getServiceStatus()) {
+				return null;
+			}
+			
+			return cfg.getArchetypeIds();
+			
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+		
 	}
 
 }

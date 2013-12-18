@@ -1,6 +1,8 @@
 package org.hibernarm.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -35,18 +37,7 @@ public interface AQLExecute {
 	 * -2 internal error
 	 */
 	@WebMethod
-	int reconfigure();
-
-	/**
-	 * @param archetypeId
-	 * @param archetype
-	 * @param arm
-	 * @return
-	 * 0 success
-	 * -1 service running
-	 */
-	@WebMethod
-	int registerArchetype(String archetypeId, String archetype, String arm);
+	int reconfigure(Collection<String> archetypes, Collection<String> arms);
 
 	/**
 	 * @param aql
@@ -101,4 +92,7 @@ public interface AQLExecute {
 	 */
 	@WebMethod
 	List<String> getSQL(String aql);
+
+	@WebMethod
+	Set<String> getArchetypeIds();
 }
