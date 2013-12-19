@@ -137,6 +137,11 @@
 			<version>${hibernarm.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernarm</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernarm.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
