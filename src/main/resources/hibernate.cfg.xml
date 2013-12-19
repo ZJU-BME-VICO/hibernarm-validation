@@ -22,20 +22,21 @@
 	<session-factory>
 
 		<!-- Database connection settings -->
-		<!-- <property name="connection.driver_class">org.h2.Driver</property> 
-			<property name="connection.url">jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</property> 
-			<property name="connection.username">sa</property> <property name="connection.password"/> -->
-
 		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 		<property name="connection.url">${database.url}</property>
 		<property name="connection.username">${database.username}</property>
 		<property name="connection.password">${database.password}</property>
-
-		<!-- JDBC connection pool (use the built-in) -->
-		<property name="connection.pool_size">1</property>
+		
+		<!-- JDBC connection pool (use C3P0) -->
+		<property name="connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
+		<property name="c3p0.max_size">20</property>
+		<property name="c3p0.min_size">5</property>
+		<property name="c3p0.timeout">100</property>
+		<property name="c3p0.max_statements">100</property>
+		<property name="c3p0.idle_test_period">100</property>
+		<property name="c3p0.acquire_increment">5</property>
 
 		<!-- SQL dialect -->
-		<!-- <property name="dialect">org.hibernate.dialect.H2Dialect</property> -->
 		<property name="dialect">org.hibernarm.service.dialect.UnicodeSQLServerDialect</property>
 
 		<!-- Disable the second-level cache -->
