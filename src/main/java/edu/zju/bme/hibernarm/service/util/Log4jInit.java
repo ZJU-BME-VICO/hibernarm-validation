@@ -1,4 +1,4 @@
-package org.hibernarm.service.util;
+package edu.zju.bme.hibernarm.service.util;
 
 import java.io.FileInputStream;
 import java.util.Properties;

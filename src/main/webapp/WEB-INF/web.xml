@@ -4,7 +4,6 @@
     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
-
 <web-app>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -19,7 +18,7 @@
 	
 	<servlet>
 		<servlet-name>log4j-init</servlet-name>
-		<servlet-class>org.hibernarm.service.util.Log4jInit</servlet-class>
+		<servlet-class>edu.zju.bme.hibernarm.service.util.Log4jInit</servlet-class>
 		<init-param>
 			<param-name>log4j</param-name>
 			<param-value>WEB-INF/classes/log4j.properties</param-value>

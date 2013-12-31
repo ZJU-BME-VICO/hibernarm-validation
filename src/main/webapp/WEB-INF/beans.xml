@@ -13,14 +13,14 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<jaxws:endpoint id="AQLExecute"
-		implementor="org.hibernarm.service.AQLExecuteImpl" address="/AQLExecute">
+		implementor="edu.zju.bme.hibernarm.service.AQLExecuteImpl" address="/AQLExecute">
 		<jaxws:features>
 			<wsa:addressing xmlns:wsa="http://cxf.apache.org/ws/addressing" />
 		</jaxws:features>
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="AQLExecuteParameterized"
-		implementor="org.hibernarm.service.AQLExecuteParameterizedImpl" address="/AQLExecuteParameterized">
+		implementor="edu.zju.bme.hibernarm.service.AQLExecuteParameterizedImpl" address="/AQLExecuteParameterized">
 		<jaxws:features>
 			<wsa:addressing xmlns:wsa="http://cxf.apache.org/ws/addressing" />
 		</jaxws:features>
