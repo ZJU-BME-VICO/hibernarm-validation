@@ -1,4 +1,4 @@
-package org.hibernarm.service;
+package edu.zju.bme.hibernarm.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
 
-@WebService(endpointInterface = "org.hibernarm.service.AQLExecute")
+@WebService(endpointInterface = "edu.zju.bme.hibernarm.service.AQLExecute")
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 public class AQLExecuteImpl implements AQLExecute {
 

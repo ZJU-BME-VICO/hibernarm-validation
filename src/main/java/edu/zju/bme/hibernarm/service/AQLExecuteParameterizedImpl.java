@@ -1,4 +1,4 @@
-package org.hibernarm.service;
+package edu.zju.bme.hibernarm.service;
 
 import java.util.List;
 import java.util.Map;
@@ -7,7 +7,7 @@ import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
 
-@WebService(endpointInterface = "org.hibernarm.service.AQLExecuteParameterized")
+@WebService(endpointInterface = "edu.zju.bme.hibernarm.service.AQLExecuteParameterized")
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 public class AQLExecuteParameterizedImpl implements AQLExecuteParameterized {
 

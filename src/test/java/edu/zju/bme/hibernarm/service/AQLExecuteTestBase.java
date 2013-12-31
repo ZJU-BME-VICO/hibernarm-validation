@@ -1,4 +1,4 @@
-package org.hibernarm.service;
+package edu.zju.bme.hibernarm.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernarm.service.AQLExecuteImpl;
 import org.hibernate.internal.util.ReflectHelper;
 import org.openehr.am.archetype.Archetype;
 import org.openehr.rm.binding.DADLBinding;
@@ -20,6 +19,8 @@ import org.openehr.rm.common.archetyped.Locatable;
 import org.openehr.rm.util.GenerationStrategy;
 import org.openehr.rm.util.SkeletonGenerator;
 
+import edu.zju.bme.hibernarm.service.AQLExecuteImpl;
+import edu.zju.bme.hibernarm.service.AQLExecuteParameterizedImpl;
 import se.acode.openehr.parser.ADLParser;
 
 public class AQLExecuteTestBase {
