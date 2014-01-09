@@ -23,7 +23,7 @@
 			<properties>
 				<env>dev</env>
 				<tomcat.url>http://localhost:${tomcat.port}/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-service</database.url>
+				<database.url>jdbc:jtds:sqlserver://wl-pc:1433/hibernarm-service</database.url>
 				<database.username>sa</database.username>
 				<database.password>sa</database.password>
 			</properties>
@@ -42,7 +42,7 @@
 			<properties>
 				<env>test</env>
 				<tomcat.url>http://wl-pc:${tomcat.port}/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://wl-pc:1433;DatabaseName=hibernarm-service</database.url>
+				<database.url>jdbc:jtds:sqlserver://wl-pc:1433/hibernarm-service</database.url>
 				<database.username>sa</database.username>
 				<database.password>sa</database.password>
 			</properties>
@@ -173,22 +173,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.3.171</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
@@ -197,6 +181,21 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-hibernate</artifactId>
 			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.jodatime</artifactId>
+			<version>2.0.1</version>
+		</dependency>  
+		<dependency>
+			<groupId>edu.zju.bme</groupId>
+			<artifactId>snippet-java</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.3.1</version>
 		</dependency>
 	</dependencies>
 </project>

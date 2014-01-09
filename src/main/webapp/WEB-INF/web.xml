@@ -7,7 +7,7 @@
 <web-app>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/beans.xml</param-value>
+		<param-value>classpath:beans.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -18,7 +18,7 @@
 	
 	<servlet>
 		<servlet-name>log4j-init</servlet-name>
-		<servlet-class>edu.zju.bme.hibernarm.service.util.Log4jInit</servlet-class>
+		<servlet-class>edu.zju.bme.snippet.java.Log4jInit</servlet-class>
 		<init-param>
 			<param-name>log4j</param-name>
 			<param-value>WEB-INF/classes/log4j.properties</param-value>
