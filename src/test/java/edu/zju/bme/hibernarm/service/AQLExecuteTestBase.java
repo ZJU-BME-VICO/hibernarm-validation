@@ -235,7 +235,7 @@ public class AQLExecuteTestBase {
 						GenerationStrategy.MAXIMUM_EMPTY);
 				if (result instanceof Locatable) {
 					Locatable loc = (Locatable) result;
-					ReflectHelper.setArchetypeValue(loc, values);
+					ReflectHelper.setArchetypeValues(loc, values, null);
 					dadls.add(binding.toDADLString(loc));
 				}
 			}
