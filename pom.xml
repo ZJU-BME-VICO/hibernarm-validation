@@ -22,8 +22,8 @@
 			<id>dev</id>
 			<properties>
 				<env>dev</env>
-				<tomcat.url>http://wl-pc:${tomcat.port}/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://wl-pc:1433;DatabaseName=hibernarm-validation</database.url>
+				<tomcat.url>http://localhost:${tomcat.port}/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://wl-pc:1433;DatabaseName=hibernarm-validation-dev</database.url>
 				<database.username>sa</database.username>
 				<database.password>sa</database.password>
 			</properties>
@@ -35,6 +35,16 @@
 			<id>production</id>
 			<properties>
 				<env>production</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+				<tomcat.url>http://wl-pc:${tomcat.port}/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://wl-pc:1433;DatabaseName=hibernarm-validation</database.url>
+				<database.username>sa</database.username>
+				<database.password>sa</database.password>
 			</properties>
 		</profile>
 	</profiles>
