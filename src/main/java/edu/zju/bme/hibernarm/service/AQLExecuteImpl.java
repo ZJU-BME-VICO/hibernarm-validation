@@ -92,4 +92,11 @@ public class AQLExecuteImpl implements AQLExecute {
 		
 	}
 
+	@Override
+	public String getArchetypeString(String archetypeId) {
+
+		return AQLExecuteSingleton.INSTANCE.getArchetypeString(archetypeId);
+		
+	}
+
 }

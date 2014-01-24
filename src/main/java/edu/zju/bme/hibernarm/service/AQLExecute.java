@@ -95,4 +95,7 @@ public interface AQLExecute {
 
 	@WebMethod
 	Set<String> getArchetypeIds();
+
+	@WebMethod
+	String getArchetypeString(String archetypeId);
 }

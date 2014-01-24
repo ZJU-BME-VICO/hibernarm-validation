@@ -346,5 +346,23 @@ public enum AQLExecuteSingleton {
 		}
 		
 	}
+	
+	public String getArchetypeString(String archetypeId) {
+		
+		logger.info("getArchetypeString");
+		
+		try {
+			if (!getServiceStatus()) {
+				return "";
+			}
+			
+			return cfg.getArchetypeString(archetypeId);
+			
+		} catch (Exception e) {
+			logger.error(e);
+			return "";
+		}
+		
+	}
 
 }
