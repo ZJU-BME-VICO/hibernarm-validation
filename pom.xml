@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.7.8</cxf.version>
 		<springframework.version>4.0.0.RELEASE</springframework.version>
-		<hibernarm.version>4.3.0.1</hibernarm.version>
+		<hibernarm.version>4.3.1.1</hibernarm.version>
 		<aspectj.version>1.7.4</aspectj.version>
 		<tomcat.port>9093</tomcat.port>
 	</properties>
