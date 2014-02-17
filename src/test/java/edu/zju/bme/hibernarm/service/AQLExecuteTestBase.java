@@ -146,6 +146,9 @@ public class AQLExecuteTestBase {
 			visit1.put(
 					"/context/other_context[at0001]/items[at0015]/value/value",
 					"patient1");
+			visit1.put(
+					"/context/other_context[at0001]/items[at0016]/value/magnitude",
+					null);
 			visits.put(visit1, "openEHR-EHR-COMPOSITION.visit.v3");
 		}
 
