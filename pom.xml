@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.zju.bme</groupId>
 	<artifactId>hibernarm-service</artifactId>
-	<version>0.0.2</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 	<name>Hibernarm Service</name>
 
