@@ -181,12 +181,6 @@
 			<version>3.2.1</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>edu.zju.bme</groupId>
 			<artifactId>snippet-java</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
