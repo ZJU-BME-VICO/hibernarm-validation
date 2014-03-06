@@ -138,6 +138,8 @@ public enum AQLExecuteSingleton {
 				return null;
 			}
 
+			long startTime = System.currentTimeMillis();
+			
 			Session s = sessionFactory.openSession();
 			Transaction txn = s.beginTransaction();
 
@@ -153,7 +155,12 @@ public enum AQLExecuteSingleton {
 			s.flush();
 			txn.commit();
 			s.close();
+			
+			long endTime = System.currentTimeMillis();
+			logger.info("aql execute time (ms) : " + (endTime - startTime));
 
+			startTime = System.currentTimeMillis();
+			
 			List<String> dadlResults = new ArrayList<String>();
 			for (Object arr : results) {
 				if (arr.getClass().isArray()) {
@@ -165,6 +172,9 @@ public enum AQLExecuteSingleton {
 				}
 			}
 
+			endTime = System.currentTimeMillis();
+			logger.info("generate dadl time (ms) : " + (endTime - startTime));
+			
 			return dadlResults;
 		} catch (Exception e) {
 			logger.error(e);
@@ -202,6 +212,8 @@ public enum AQLExecuteSingleton {
 				return -1;
 			}
 
+			long startTime = System.currentTimeMillis();
+
 			List<Object> objects = new ArrayList<Object>();
 
 			for (String dadl : dadls) {
@@ -225,6 +237,9 @@ public enum AQLExecuteSingleton {
 			s.flush();
 			txn.commit();
 			s.close();
+			
+			long endTime = System.currentTimeMillis();
+			logger.info("aql execute time (ms) : " + (endTime - startTime));
 		} catch (Exception e) {
 			logger.error(e);
 			return -2;
@@ -269,6 +284,8 @@ public enum AQLExecuteSingleton {
 				return -1;
 			}
 
+			long startTime = System.currentTimeMillis();
+
 			Session s = sessionFactory.openSession();
 			Transaction txn = s.beginTransaction();
 
@@ -279,6 +296,9 @@ public enum AQLExecuteSingleton {
 			s.flush();
 			txn.commit();
 			s.close();
+			
+			long endTime = System.currentTimeMillis();
+			logger.info("aql execute time (ms) : " + (endTime - startTime));
 
 			logger.info(ret);
 
@@ -313,6 +333,8 @@ public enum AQLExecuteSingleton {
 				return null;
 			}
 
+			long startTime = System.currentTimeMillis();
+
 			final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
 			final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
 			final QueryTranslator translator = translatorFactory
@@ -320,6 +342,9 @@ public enum AQLExecuteSingleton {
 							factory, null);
 			translator.compile(Collections.EMPTY_MAP, false);
 			List<String> sqls = translator.collectSqlStrings();
+			
+			long endTime = System.currentTimeMillis();
+			logger.info("aql execute time (ms) : " + (endTime - startTime));
 
 			return sqls;
 		} catch (Exception e) {
