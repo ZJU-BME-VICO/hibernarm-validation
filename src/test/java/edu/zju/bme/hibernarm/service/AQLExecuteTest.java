@@ -888,6 +888,42 @@ public class AQLExecuteTest extends AQLExecuteTestBase {
 	}
 
 	@Test
+	public void testSelectCount() throws Exception {
+		reconfigure();
+
+		cleanTestBaseData();
+		createTestBaseData();
+
+		{
+			String query = "select count(*) "
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o ";
+			long count = aqlImpl.selectCount(query);
+
+			assertEquals(count, 3);
+		}
+
+		{
+			String query = "select count(*) "
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "where o#/uid/value = 'patient1'";
+			long count = aqlImpl.selectCount(query);
+
+			assertEquals(count, 1);
+		}
+
+		{
+			String query = "select count(*) "
+					+ "from openEHR-DEMOGRAPHIC-PERSON.patient.v1 as o "
+					+ "where o#/uid/value = 'patientXXX'";
+			long count = aqlImpl.selectCount(query);
+
+			assertEquals(count, 0);
+		}
+
+		cleanTestBaseData();
+	}
+
+	@Test
 	public void testUpdate() throws Exception {
 		reconfigure();
 

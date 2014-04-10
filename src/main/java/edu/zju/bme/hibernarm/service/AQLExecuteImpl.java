@@ -58,6 +58,13 @@ public class AQLExecuteImpl implements AQLExecute {
 	}
 
 	@Override
+	public long selectCount(String aql) {
+
+		return AQLExecuteSingleton.INSTANCE.selectCount(aql);
+
+	}
+
+	@Override
 	public int insert(String[] dadls) {
 
 		return AQLExecuteSingleton.INSTANCE.insert(dadls);
