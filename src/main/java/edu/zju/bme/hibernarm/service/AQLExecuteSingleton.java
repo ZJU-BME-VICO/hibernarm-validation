@@ -203,6 +203,43 @@ public enum AQLExecuteSingleton {
 
 	}
 
+	public long selectCount(String aql) {
+
+		logger.info("selectCount");
+
+		logger.info(aql);
+
+		try {
+			if (!getServiceStatus()) {
+				return -1;
+			}
+
+			long startTime = System.currentTimeMillis();
+
+			Session s = sessionFactory.openSession();
+			Transaction txn = s.beginTransaction();
+
+			Query q = s.createQuery(aql);
+			List<?> l = q.list();
+			long ret = (long) l.get(0);
+
+			s.flush();
+			txn.commit();
+			s.close();
+			
+			long endTime = System.currentTimeMillis();
+			logger.info("aql execute time (ms) : " + (endTime - startTime));
+
+			logger.info(ret);
+
+			return ret;
+		} catch (Exception e) {
+			logger.error(e);
+			return -2;
+		}
+
+	}
+
 	public int insert(String[] dadls) {
 
 		logger.info("insert");
