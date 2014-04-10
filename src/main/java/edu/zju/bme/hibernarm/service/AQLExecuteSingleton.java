@@ -221,7 +221,7 @@ public enum AQLExecuteSingleton {
 
 			Query q = s.createQuery(aql);
 			List<?> l = q.list();
-			long ret = (long) l.get(0);
+			long ret = (Long) l.get(0);
 
 			s.flush();
 			txn.commit();
