@@ -41,10 +41,10 @@
 			<id>test</id>
 			<properties>
 				<env>test</env>
-				<tomcat.url>http://localhost:${tomcat.port}/manager/text</tomcat.url>
-				<database.url>jdbc:sqlserver://localhost:1433;DatabaseName=hibernarm-service</database.url>
+				<tomcat.url>http://172.16.100.63:${tomcat.port}/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://172.16.100.33;instanceName=CDR;databaseName=hibernarm-service</database.url>
 				<database.username>sa</database.username>
-				<database.password>sa</database.password>
+				<database.password>@Sxdyy0808</database.password>
 			</properties>
 		</profile>
 	</profiles>
