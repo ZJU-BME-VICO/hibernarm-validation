@@ -47,6 +47,16 @@
 				<database.password>@Sxdyy0808</database.password>
 			</properties>
 		</profile>
+		<profile>
+			<id>testzju</id>
+			<properties>
+				<env>testzju</env>
+				<tomcat.url>http://eric-pc:${tomcat.port}/manager/text</tomcat.url>
+				<database.url>jdbc:sqlserver://eric-pc:1433;DatabaseName=hibernarm-service</database.url>
+				<database.username>sa</database.username>
+				<database.password>sa</database.password>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
