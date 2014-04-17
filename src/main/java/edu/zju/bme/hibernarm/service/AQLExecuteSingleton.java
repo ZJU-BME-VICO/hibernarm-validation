@@ -32,8 +32,7 @@ public enum AQLExecuteSingleton {
 
 	INSTANCE;
 
-	private Logger logger = Logger.getLogger(AQLExecuteSingleton.class
-			.getName());
+	private Logger logger = Logger.getLogger(AQLExecuteSingleton.class.getName());
 
 	private Configuration cfg;
 	private SessionFactory sessionFactory;
@@ -132,6 +131,9 @@ public enum AQLExecuteSingleton {
 		logger.info("select");
 
 		logger.info(aql);
+		
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
 
 		try {
 			if (!getServiceStatus()) {
@@ -139,9 +141,6 @@ public enum AQLExecuteSingleton {
 			}
 
 			long startTime = System.currentTimeMillis();
-			
-			Session s = sessionFactory.openSession();
-			Transaction txn = s.beginTransaction();
 
 			Query q = s.createQuery(aql);
 			passParameters(q, parameters);
@@ -152,9 +151,7 @@ public enum AQLExecuteSingleton {
 			@SuppressWarnings("rawtypes")
 			List results = q.list();
 
-			s.flush();
 			txn.commit();
-			s.close();
 			
 			long endTime = System.currentTimeMillis();
 			logger.info("aql execute time (ms) : " + (endTime - startTime));
@@ -177,9 +174,18 @@ public enum AQLExecuteSingleton {
 			
 			return dadlResults;
 		} catch (Exception e) {
+    		try {
+    			txn.rollback();
+    		} catch (Exception rbe) {
+    			logger.error("Couldn’t roll back transaction", rbe);
+    		}
 			logger.error(e);
 			return null;
-		}
+		} finally {
+    		if (s != null) {
+    			s.close();
+    		}
+    	}
 
 	}
 
@@ -209,6 +215,9 @@ public enum AQLExecuteSingleton {
 
 		logger.info(aql);
 
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
+
 		try {
 			if (!getServiceStatus()) {
 				return -1;
@@ -216,33 +225,40 @@ public enum AQLExecuteSingleton {
 
 			long startTime = System.currentTimeMillis();
 
-			Session s = sessionFactory.openSession();
-			Transaction txn = s.beginTransaction();
-
 			Query q = s.createQuery(aql);
 			List<?> l = q.list();
 			long ret = (Long) l.get(0);
 
-			s.flush();
 			txn.commit();
-			s.close();
 			
 			long endTime = System.currentTimeMillis();
 			logger.info("aql execute time (ms) : " + (endTime - startTime));
-
+			
 			logger.info(ret);
 
 			return ret;
 		} catch (Exception e) {
+    		try {
+    			txn.rollback();
+    		} catch (Exception rbe) {
+    			logger.error("Couldn’t roll back transaction", rbe);
+    		}
 			logger.error(e);
 			return -2;
-		}
+		} finally {
+    		if (s != null) {
+    			s.close();
+    		}
+    	}
 
 	}
 
 	public int insert(String[] dadls) {
 
 		logger.info("insert");
+
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
 
 		try {
 			if (!getServiceStatus()) {
@@ -255,8 +271,7 @@ public enum AQLExecuteSingleton {
 
 			for (String dadl : dadls) {
 				logger.info(dadl);
-				InputStream is = new ByteArrayInputStream(
-						dadl.getBytes("UTF-8"));
+				InputStream is = new ByteArrayInputStream(dadl.getBytes("UTF-8"));
 				DADLParser parser = new DADLParser(is);
 				ContentObject contentObj = parser.parse();
 				DADLBinding binding = new DADLBinding();
@@ -264,23 +279,27 @@ public enum AQLExecuteSingleton {
 				objects.add(bp);
 			}
 
-			Session s = sessionFactory.openSession();
-			Transaction txn = s.beginTransaction();
-
 			for (Object object : objects) {
 				s.save(object);
 			}
 
-			s.flush();
 			txn.commit();
-			s.close();
 			
 			long endTime = System.currentTimeMillis();
 			logger.info("aql execute time (ms) : " + (endTime - startTime));
 		} catch (Exception e) {
+    		try {
+    			txn.rollback();
+    		} catch (Exception rbe) {
+    			logger.error("Couldn’t roll back transaction", rbe);
+    		}
 			logger.error(e);
 			return -2;
-		}
+		} finally {
+    		if (s != null) {
+    			s.close();
+    		}
+    	}
 
 		return 0;
 
@@ -316,6 +335,9 @@ public enum AQLExecuteSingleton {
 
 		logger.info(aql);
 
+		Session s = sessionFactory.openSession();
+		Transaction txn = s.beginTransaction();
+
 		try {
 			if (!getServiceStatus()) {
 				return -1;
@@ -323,16 +345,11 @@ public enum AQLExecuteSingleton {
 
 			long startTime = System.currentTimeMillis();
 
-			Session s = sessionFactory.openSession();
-			Transaction txn = s.beginTransaction();
-
 			Query q = s.createQuery(aql);
 			passParameters(q, parameters);
 			int ret = q.executeUpdate();
 
-			s.flush();
 			txn.commit();
-			s.close();
 			
 			long endTime = System.currentTimeMillis();
 			logger.info("aql execute time (ms) : " + (endTime - startTime));
@@ -341,9 +358,18 @@ public enum AQLExecuteSingleton {
 
 			return ret;
 		} catch (Exception e) {
+    		try {
+    			txn.rollback();
+    		} catch (Exception rbe) {
+    			logger.error("Couldn’t roll back transaction", rbe);
+    		}
 			logger.error(e);
 			return -2;
-		}
+		} finally {
+    		if (s != null) {
+    			s.close();
+    		}
+    	}
 
 	}
 
@@ -375,8 +401,7 @@ public enum AQLExecuteSingleton {
 			final QueryTranslatorFactory translatorFactory = new ASTQueryTranslatorFactory();
 			final SessionFactoryImplementor factory = (SessionFactoryImplementor) sessionFactory;
 			final QueryTranslator translator = translatorFactory
-					.createQueryTranslator(aql, aql, Collections.EMPTY_MAP,
-							factory, null);
+					.createQueryTranslator(aql, aql, Collections.EMPTY_MAP, factory, null);
 			translator.compile(Collections.EMPTY_MAP, false);
 			List<String> sqls = translator.collectSqlStrings();
 			
